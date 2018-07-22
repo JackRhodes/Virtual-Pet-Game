@@ -8,7 +8,7 @@ namespace virtual_pet_game.Areas.v1.Data
 {
     public class StubDataContext:IContext
     {
-        public IEnumerable<User> Users { get; set; } = new List<User>()
+        public List<User> Users { get; set; } = new List<User>()
         {
             new User()
             {

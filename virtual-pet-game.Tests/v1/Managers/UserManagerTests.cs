@@ -108,5 +108,23 @@ namespace virtual_pet_game.Tests.v1.Managers
             UserDTO result = userManager.GetUserById(100);
         }
 
+        [TestMethod]
+        public void AddUser_ShouldAddUserToDatasource_WhenValidUserCreationDTO()
+        {
+            UserCreationDTO userCreation = new UserCreationDTO()
+            {
+                FirstName = "Gareth",
+                LastName = "SouthGate",
+                Password = "It is not coming home"
+            };
+
+            var returnValue = userManager.AddUser(userCreation);
+
+            Assert.AreEqual(userCreation.FirstName, returnValue.FirstName);
+            Assert.AreEqual(userCreation.LastName, returnValue.LastName);
+            Assert.AreEqual(3, returnValue.Id);
+
+        }
+
     }
 }

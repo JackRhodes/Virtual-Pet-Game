@@ -11,5 +11,7 @@ namespace virtual_pet_game.Areas.v1.Managers.Contracts
     {
         IEnumerable<UserDTO> GetUsers();
         UserDTO GetUserById(int id);
+
+        UserCreatedDTO AddUser(UserCreationDTO userCreationDTO);
     }
 }

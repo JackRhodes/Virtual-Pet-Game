@@ -68,5 +68,29 @@ namespace virtual_pet_game.Tests.v1.Repository
             //Handled by controller
             User user = userRepository.GetUserById(100);
         }
+
+        [TestMethod]
+        public void AddUser_ShouldAddUser_WhenValid()
+        {
+            User user = new User()
+            {
+                Id = 3,
+                FirstName = "Bob",
+                LastName = "Marley",
+                Password = "Do Not Worry"
+            };
+            
+            int userCount = userRepository.GetUsers().Count();
+
+            User returnValue = userRepository.CreateUser(user);
+
+            Assert.AreEqual(2, userCount);;
+            userCount = userRepository.GetUsers().Count();
+            Assert.AreEqual(3, userCount);
+            Assert.AreEqual(user.FirstName, returnValue.FirstName);
+            Assert.AreEqual(user.LastName, returnValue.LastName);
+            Assert.AreEqual(3, user.Id);
+        }
+
     }
 }

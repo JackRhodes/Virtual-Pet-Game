@@ -13,6 +13,8 @@ namespace virtual_pet_game.Areas.v1.Models.Mappings
         public DTOMappings()
         {
             CreateMap<User, UserDTO>();
+            CreateMap<UserCreationDTO, User>();
+            CreateMap<User, UserCreatedDTO>();
         }
     }
 }

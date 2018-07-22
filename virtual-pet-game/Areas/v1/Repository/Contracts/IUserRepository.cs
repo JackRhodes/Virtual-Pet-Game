@@ -10,5 +10,7 @@ namespace virtual_pet_game_Areas.v1.Repository.Contracts
     {
         IEnumerable<User> GetUsers();
         User GetUserById(int id);
+
+        User CreateUser(User user);
     }
 }

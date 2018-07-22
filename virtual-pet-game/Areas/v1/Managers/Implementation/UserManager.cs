@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using virtual_pet_game.Areas.v1.Managers.Contracts;
@@ -19,6 +21,18 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             this.userRepository = userRepository;
         }
 
+        public UserCreatedDTO AddUser(UserCreationDTO userCreationDTO)
+        {
+            User user = Mapper.Map<User>(userCreationDTO);
+            user.Id = GetNextId();
+
+            User result = userRepository.CreateUser(user);
+
+            UserCreatedDTO returnValue = Mapper.Map<UserCreatedDTO>(result);
+            
+            return returnValue;
+        }
+
         public UserDTO GetUserById(int id)
         {
             User user = userRepository.GetUserById(id);
@@ -34,5 +48,14 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
 
             return returnValue;
         }
+
+        //Not needed when Database with sequential fields, added as using in memory database.
+        private int GetNextId()
+        {
+            int maxId = userRepository.GetUsers().Max(x => x.Id);
+
+            return maxId +1;
+        }
+
     }
 }

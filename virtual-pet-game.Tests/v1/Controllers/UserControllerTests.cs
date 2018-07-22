@@ -121,6 +121,27 @@ namespace virtual_pet_game.Tests
             Assert.AreEqual("100 was not found", response.Value);
         }
 
+        [TestMethod]
+        public void AddUser_ShouldReturn201_WhenCalledWithValidUserCreationDTO()
+        {
+            UserCreationDTO userCreationDTO = new UserCreationDTO()
+            {
+                FirstName = "Matthew",
+                LastName = "Roberts",
+                Password = "MattyRob"
+            };
+
+            var result = userController.AddUser(userCreationDTO);
+            var response = result as CreatedAtRouteResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(201, response.StatusCode);
+            Assert.AreEqual("GetById", response.RouteName);
+            Assert.IsTrue(response.Value is UserCreatedDTO);
+            UserCreatedDTO userCreatedDTO = response.Value as UserCreatedDTO;
+            Assert.AreEqual(userCreationDTO.FirstName, userCreatedDTO.FirstName);
+            Assert.AreEqual(userCreationDTO.LastName, userCreatedDTO.LastName);
+        }
 
     }
 }

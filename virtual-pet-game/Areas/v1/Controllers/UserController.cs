@@ -22,10 +22,10 @@ namespace virtual_pet_game.Areas.v1.Controllers
         public IActionResult Get()
         {
             IEnumerable<UserDTO> users = userManager.GetUsers();
-            
+
             return Ok(users);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetById")]
         public IActionResult GetById(int id)
         {
             UserDTO user = null;
@@ -48,6 +48,22 @@ namespace virtual_pet_game.Areas.v1.Controllers
             return Ok(user);
 
         }
+        [HttpPost]
+        public IActionResult AddUser([FromBody] UserCreationDTO user)
+        {
+            if (user == null)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var returnValue = userManager.AddUser(user);
+            
+            return CreatedAtRoute("GetById", new {id = returnValue.Id }, returnValue);
+        }
+
+
+        //For the sake of time, I am omitting Patch and Delete.
 
     }
 }
