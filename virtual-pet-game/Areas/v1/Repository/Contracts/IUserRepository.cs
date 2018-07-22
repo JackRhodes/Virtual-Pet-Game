@@ -9,5 +9,6 @@ namespace virtual_pet_game_Areas.v1.Repository.Contracts
     public interface IUserRepository
     {
         IEnumerable<User> GetUsers();
+        User GetUserById(int id);
     }
 }

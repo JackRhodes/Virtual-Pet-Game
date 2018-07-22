@@ -18,12 +18,21 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
         {
             this.userRepository = userRepository;
         }
+
+        public UserDTO GetUserById(int id)
+        {
+            User user = userRepository.GetUserById(id);
+            UserDTO returnValue = Mapper.Map<UserDTO>(user);
+
+            return returnValue;
+        }
+
         public IEnumerable<UserDTO> GetUsers()
         {
             IEnumerable<User> result = userRepository.GetUsers();
-            IEnumerable<UserDTO> returnValue =  Mapper.Map<IEnumerable<UserDTO>>(result);
+            IEnumerable<UserDTO> returnValue = Mapper.Map<IEnumerable<UserDTO>>(result);
 
-            return returnValue;            
+            return returnValue;
         }
     }
 }

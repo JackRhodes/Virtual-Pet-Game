@@ -10,5 +10,6 @@ namespace virtual_pet_game.Areas.v1.Managers.Contracts
     public interface IUserManager
     {
         IEnumerable<UserDTO> GetUsers();
+        UserDTO GetUserById(int id);
     }
 }

@@ -17,6 +17,11 @@ namespace virtual_pet_game_Areas.v1.Repository.Implementation
             this.context = context;
         }
 
+        public User GetUserById(int id)
+        {
+            return context.Users.First(x => x.Id == id);
+        }
+
         public IEnumerable<User> GetUsers()
         {
             return context.Users;

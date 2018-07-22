@@ -53,5 +53,20 @@ namespace virtual_pet_game.Tests.v1.Repository
             Assert.AreEqual(mockUser.Count, results.Count);
             Assert.AreEqual(true, mockUser.SequenceEqual(results));
         }
+
+        [TestMethod]
+        public void GetUserById_ShouldReturnUsers_WhenValidId()
+        {
+            User user = userRepository.GetUserById(1);
+            Assert.ReferenceEquals(mockUser[0], user);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetUserById_ShouldThrowExcpetion_WhenInvalidId()
+        {
+            //Handled by controller
+            User user = userRepository.GetUserById(100);
+        }
     }
 }

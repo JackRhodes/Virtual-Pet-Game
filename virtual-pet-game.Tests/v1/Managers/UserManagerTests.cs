@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using virtual_pet_game.Areas.v1.Data;
 using virtual_pet_game.Areas.v1.Managers.Implementation;
 using virtual_pet_game.Areas.v1.Models.Data;
 using virtual_pet_game.Areas.v1.Models.DTO;
 using virtual_pet_game.Areas.v1.Models.Mappings;
 using virtual_pet_game_Areas.v1.Repository.Contracts;
+using virtual_pet_game_Areas.v1.Repository.Implementation;
 
 namespace virtual_pet_game.Tests.v1.Managers
 {
@@ -37,30 +39,33 @@ namespace virtual_pet_game.Tests.v1.Managers
             }
         };
 
+        List<UserDTO> expectedResults;
+
+        IUserRepository userRepository;
+
         [TestInitialize]
         public void TestSetup()
         {
+            Mapper.Reset();
+
             //As automapper is static, it can be initalised in here to replicate the functionality offered by Startup.cs
             Mapper.Initialize(x =>
             {
                 x.AddProfile(new DTOMappings());
             });
 
+            
+            Mock<IContext> context = new Mock<IContext>();
 
-            Mock<IUserRepository> mockUserRepository = new Mock<IUserRepository>();
+            context.Setup(x => x.Users).Returns(mockUser);
+            //No need to Mock the actual repository
+            userRepository = new UserRepository(context.Object);
 
-            mockUserRepository.Setup(x => x.GetUsers()).Returns(mockUser);
+            userManager = new UserManager(userRepository);
 
-            userManager = new UserManager(mockUserRepository.Object);
+            expectedResults = new List<UserDTO>();
 
-        }
-
-        [TestMethod]
-        public void GetUsers_ShouldReturnUsersAsDTO_WhenRan()
-        {
-            List<UserDTO> expectedResults = new List<UserDTO>();
-
-            foreach(var user in mockUser)
+            foreach (var user in mockUser)
             {
                 expectedResults.Add(
 
@@ -74,6 +79,11 @@ namespace virtual_pet_game.Tests.v1.Managers
             }
 
 
+        }
+
+        [TestMethod]
+        public void GetUsers_ShouldReturnUsersAsDTO_WhenRan()
+        {
             List<UserDTO> result = userManager.GetUsers().ToList();
 
             Assert.AreEqual(expectedResults.Count, result.Count);
@@ -81,6 +91,21 @@ namespace virtual_pet_game.Tests.v1.Managers
             Assert.AreEqual(expectedResults[0].LastName, result[0].LastName);
             Assert.AreEqual(expectedResults[1].FirstName, result[1].FirstName);
             Assert.AreEqual(expectedResults[1].LastName, result[1].LastName);
+        }
+
+        [TestMethod]
+        public void GetUserById_ShouldReturnUser_WhenValidId()
+        {
+            UserDTO result = userManager.GetUserById(1);
+            Assert.AreEqual(expectedResults[0].FirstName, result.FirstName);
+            Assert.AreEqual(expectedResults[0].LastName, result.LastName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetUserById_ShouldThrowException_WhenInvalidId()
+        {
+            UserDTO result = userManager.GetUserById(100);
         }
 
     }
