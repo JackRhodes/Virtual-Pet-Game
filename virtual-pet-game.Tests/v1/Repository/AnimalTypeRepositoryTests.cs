@@ -71,5 +71,30 @@ namespace virtual_pet_game.Tests.v1.Repository
             AnimalType animalType = animalTypeRepository.GetAnimalTypeById(100);
         }
 
+
+        [TestMethod]
+        public void AddAnimalType_ShouldAddAnimalType_WhenValid()
+        {
+            AnimalType animalType = new AnimalType()
+            {
+                Id = 3,
+                AnimalTypeName = "Donkey",
+                HappinessDeductionRate = 5,
+                HungerIncreaseRate = 3
+            };
+
+            int animalCount = animalTypeRepository.GetAnimalTypes().Count();
+
+            AnimalType returnValue = animalTypeRepository.CreateAnimalType(animalType);
+
+            Assert.AreEqual(2, animalCount); 
+            animalCount = animalTypeRepository.GetAnimalTypes().Count();
+            Assert.AreEqual(3, animalCount);
+            Assert.AreEqual(animalType.Id, returnValue.Id);
+            Assert.AreEqual(animalType.AnimalTypeName, returnValue.AnimalTypeName);
+            Assert.AreEqual(animalType.HappinessDeductionRate, returnValue.HappinessDeductionRate);
+            Assert.AreEqual(animalType.HungerIncreaseRate, returnValue.HungerIncreaseRate);
+        }
+
     }
 }

@@ -88,5 +88,23 @@ namespace virtual_pet_game.Tests.v1.Managers
             AnimalTypeDTO result = animalTypeManager.GetAnimalTypeById(100);
         }
 
+        [TestMethod]
+        public void AddAnimalType_ShouldAddAnimalTypeToDatasource_WhenValidAnimalTypeCreationDTO()
+        {
+            AnimalTypeCreationDTO animalTypeCreation = new AnimalTypeCreationDTO()
+            {
+                AnimalTypeName = "Crocodile",
+                HappinessDeductionRate = 2,
+                HungerIncreaseRate = 4
+            };
+
+            var returnValue = animalTypeManager.CreateAnimalType(animalTypeCreation);
+
+            Assert.AreEqual(animalTypeCreation.AnimalTypeName, returnValue.AnimalTypeName);
+            Assert.AreEqual(animalTypeCreation.HappinessDeductionRate, returnValue.HappinessDeductionRate);
+            Assert.AreEqual(animalTypeCreation.HungerIncreaseRate, returnValue.HungerIncreaseRate);
+            Assert.AreEqual(3, returnValue.Id);
+        }
+
     }
 }

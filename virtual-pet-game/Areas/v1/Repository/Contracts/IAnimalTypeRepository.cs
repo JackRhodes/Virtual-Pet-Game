@@ -11,5 +11,7 @@ namespace virtual_pet_game.Areas.v1.Repository.Contracts
         IEnumerable<AnimalType> GetAnimalTypes();
 
         AnimalType GetAnimalTypeById(int id);
+
+        AnimalType CreateAnimalType(AnimalType animalType);
     }
 }

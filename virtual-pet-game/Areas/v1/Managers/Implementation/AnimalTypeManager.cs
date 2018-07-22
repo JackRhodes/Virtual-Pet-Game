@@ -19,6 +19,18 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             this.animalTypeRepository = animalTypeRepository;
         }
 
+        public AnimalTypeCreatedDTO CreateAnimalType(AnimalTypeCreationDTO animalTypeCreationDTO)
+        {
+            AnimalType animalType = Mapper.Map<AnimalType>(animalTypeCreationDTO);
+            animalType.Id = GetNextId();
+
+            AnimalType result = animalTypeRepository.CreateAnimalType(animalType);
+
+            AnimalTypeCreatedDTO returnValue = Mapper.Map<AnimalTypeCreatedDTO>(result);
+
+            return returnValue;
+        }
+
         public AnimalTypeDTO GetAnimalTypeById(int id)
         {
             AnimalType animalType = animalTypeRepository.GetAnimalTypeById(id);
@@ -34,5 +46,14 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
 
             return returnValue;
         }
+
+        //Not needed when Database with sequential fields, added as using in memory database.
+        private int GetNextId()
+        {
+            int maxId = animalTypeRepository.GetAnimalTypes().Max(x => x.Id);
+
+            return maxId + 1;
+        }
+
     }
 }

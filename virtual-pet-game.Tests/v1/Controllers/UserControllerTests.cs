@@ -136,7 +136,7 @@ namespace virtual_pet_game.Tests
 
             Assert.IsNotNull(response);
             Assert.AreEqual(201, response.StatusCode);
-            Assert.AreEqual("GetById", response.RouteName);
+            Assert.AreEqual("GetUserById", response.RouteName);
             Assert.IsTrue(response.Value is UserCreatedDTO);
             UserCreatedDTO userCreatedDTO = response.Value as UserCreatedDTO;
             Assert.AreEqual(userCreationDTO.FirstName, userCreatedDTO.FirstName);

@@ -27,5 +27,11 @@ namespace virtual_pet_game.Areas.v1.Repository.Implementation
         {
             return context.AnimalTypes;
         }
+
+        public AnimalType CreateAnimalType(AnimalType animalType)
+        {
+            context.AnimalTypes.Add(animalType);
+            return GetAnimalTypeById(animalType.Id);
+        }
     }
 }

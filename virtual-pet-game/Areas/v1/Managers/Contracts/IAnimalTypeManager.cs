@@ -7,5 +7,7 @@ namespace virtual_pet_game.Areas.v1.Managers.Contracts
     {
         IEnumerable<AnimalTypeDTO> GetAnimalTypes();
         AnimalTypeDTO GetAnimalTypeById(int id);
+
+        AnimalTypeCreatedDTO CreateAnimalType(AnimalTypeCreationDTO animalTypeCreationDTO);
     }
 }

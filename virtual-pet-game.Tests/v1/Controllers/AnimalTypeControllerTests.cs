@@ -106,6 +106,30 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.AreEqual("100 was not found", response.Value);
         }
 
+        [TestMethod]
+        public void CreateAnimalType_ShouldReturn201_WhenCalledWithValidAnimalCreationDTO()
+        {
+            AnimalTypeCreationDTO animalTypeCreation = new AnimalTypeCreationDTO()
+            {
+                AnimalTypeName = "Hamster",
+                HappinessDeductionRate = 2,
+                HungerIncreaseRate = 9
+            };
+
+            var result = animalTypeController.Create(animalTypeCreation);
+            var response = result as CreatedAtRouteResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(201, response.StatusCode);
+            Assert.AreEqual("GetAnimalTypeById", response.RouteName);
+            Assert.IsTrue(response.Value is AnimalTypeCreatedDTO);
+
+            AnimalTypeCreatedDTO animalTypeCreatedDTO = response.Value as AnimalTypeCreatedDTO;
+
+            Assert.AreEqual(animalTypeCreation.AnimalTypeName, animalTypeCreatedDTO.AnimalTypeName);
+            Assert.AreEqual(animalTypeCreation.HappinessDeductionRate, animalTypeCreatedDTO.HappinessDeductionRate);
+            Assert.AreEqual(animalTypeCreation.HungerIncreaseRate, animalTypeCreatedDTO.HungerIncreaseRate);
+        }
 
     }
 }

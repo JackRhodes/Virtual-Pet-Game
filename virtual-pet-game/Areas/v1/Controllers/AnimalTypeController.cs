@@ -52,5 +52,19 @@ namespace virtual_pet_game.Areas.v1.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult Create([FromBody] AnimalTypeCreationDTO user)
+        {
+            if (user == null)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var returnValue = animalTypeManager.CreateAnimalType(user);
+
+            return CreatedAtRoute("GetAnimalTypeById", new { id = returnValue.Id }, returnValue);
+        }
+
     }
 }
