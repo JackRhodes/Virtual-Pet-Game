@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using virtual_pet_game.Areas.v1.Data;
+using virtual_pet_game.Areas.v1.Managers.Contracts;
+using virtual_pet_game.Areas.v1.Managers.Implementation;
+using virtual_pet_game.Areas.v1.Models.Mappings;
+using virtual_pet_game_Areas.v1.Repository.Contracts;
+using virtual_pet_game_Areas.v1.Repository.Implementation;
 
 namespace virtual_pet_game
 {
@@ -25,6 +32,7 @@ namespace virtual_pet_game
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            RegisterDIServices(services);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -41,6 +49,14 @@ namespace virtual_pet_game
             }
 
             app.UseHttpsRedirection();
+
+            Mapper.Initialize(x =>
+            {
+                x.AddProfile(new DTOMappings());
+            }
+
+            );
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -49,5 +65,20 @@ namespace virtual_pet_game
                 );
             });
         }
+
+        /// <summary>
+        /// Added for readibility
+        /// </summary>
+        /// <param name="services"></param>
+        private void RegisterDIServices(IServiceCollection services)
+        {
+            //This needs to remain constant across multiple requests as it's replicating a database. 
+            //Therefore needs to be singleton
+            services.AddSingleton<IContext, StubDataContext>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserManager, UserManager>();
+            services.AddAutoMapper();
+        }
+
     }
 }

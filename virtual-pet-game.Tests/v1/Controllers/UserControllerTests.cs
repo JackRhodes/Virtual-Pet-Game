@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Collections.Generic;
 using virtual_pet_game.Areas.v1.Controllers;
+using virtual_pet_game.Areas.v1.Managers.Contracts;
 using virtual_pet_game.Areas.v1.Models.DTO;
 
 namespace virtual_pet_game.Tests
@@ -11,10 +13,30 @@ namespace virtual_pet_game.Tests
     {
         private UserController userController;
 
+        private readonly IEnumerable<UserDTO> mockUsers = new List<UserDTO>()
+        {
+            new UserDTO()
+            {
+                FirstName = "Jack",
+                LastName = "Rhodes"
+            },
+            new UserDTO()
+            {
+                FirstName = "Elvis",
+                LastName = "Presley"
+            }
+        };
+
         [TestInitialize]
         public void TestSetup()
         {
-            userController = new UserController();
+            
+
+            Mock<IUserManager> mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(x => x.GetUsers()).Returns(mockUsers);
+
+            userController = new UserController(mockUserManager.Object);
         }
 
         [TestMethod]

@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using virtual_pet_game.Areas.v1.Managers.Contracts;
 using virtual_pet_game.Areas.v1.Models.DTO;
 
 namespace virtual_pet_game.Areas.v1.Controllers
@@ -12,26 +9,19 @@ namespace virtual_pet_game.Areas.v1.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IUserManager userManager;
+
+        public UserController(IUserManager userManager)
+        {
+            this.userManager = userManager;
+        }
+
         // GET: api/User
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<UserDTO> users = new List<UserDTO>()
-            {
-                new UserDTO()
-                {
-                    FirstName = "Jack",
-                    LastName = "Rhodes"
-                },
-
-                new UserDTO()
-                {
-                    FirstName = "Elvis",
-                    LastName = "Presley"
-                }
-                
-            };
-
+            IEnumerable<UserDTO> users = userManager.GetUsers();
+            
             return Ok(users);
         }
         
