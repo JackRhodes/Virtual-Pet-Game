@@ -25,7 +25,7 @@ namespace virtual_pet_game.Areas.v1.Controllers
 
             return Ok(users);
         }
-        [HttpGet("{id}", Name = "GetById")]
+        [HttpGet("{id}", Name = "GetUserById")]
         public IActionResult GetById(int id)
         {
             UserDTO user = null;
@@ -59,7 +59,7 @@ namespace virtual_pet_game.Areas.v1.Controllers
 
             var returnValue = userManager.AddUser(user);
             
-            return CreatedAtRoute("GetById", new {id = returnValue.Id }, returnValue);
+            return CreatedAtRoute("GetUserById", new {id = returnValue.Id }, returnValue);
         }
 
 

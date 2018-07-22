@@ -8,6 +8,8 @@ namespace virtual_pet_game.Areas.v1.Repository.Contracts
 {
     public interface IAnimalTypeRepository
     {
-        IEnumerable<AnimalType> GetAnimals();
+        IEnumerable<AnimalType> GetAnimalTypes();
+
+        AnimalType GetAnimalTypeById(int id);
     }
 }

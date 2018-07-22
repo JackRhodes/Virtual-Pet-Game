@@ -18,6 +18,7 @@ using virtual_pet_game.Areas.v1.Repository.Implementation;
 
 namespace virtual_pet_game.Tests.v1.Controllers
 {
+    [TestClass]
     public class AnimalTypeControllerTests
     {
         public List<AnimalType> mockAnimalTypes = new List<AnimalType>()
@@ -80,6 +81,31 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.AreEqual(mockAnimalTypes.Count, animalTypes.Count());
             Assert.AreEqual(mockAnimalTypes[0].Id, animalTypes.ToList()[0].Id);
         }
+
+        [TestMethod]
+        public void GetAnimalTypeById_ShouldReturnUser_WhenCalledWithValidId()
+        {
+            var result = animalTypeController.GetById(1);
+            var response = result as OkObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(200, response.StatusCode);
+
+            AnimalTypeDTO animalTypeDTO = response.Value as AnimalTypeDTO;
+            Assert.AreEqual(mockAnimalTypes[0].Id, animalTypeDTO.Id);
+        }
+
+        [TestMethod]
+        public void GetUserById_Should404_WhenCalledWithInvalidId()
+        {
+            var result = animalTypeController.GetById(100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("100 was not found", response.Value);
+        }
+
 
     }
 }

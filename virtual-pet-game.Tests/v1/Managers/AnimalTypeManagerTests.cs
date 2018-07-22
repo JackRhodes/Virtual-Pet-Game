@@ -73,6 +73,20 @@ namespace virtual_pet_game.Tests.v1.Managers
             Assert.AreEqual(mockAnimalTypes[0].Id, animalTypeDTOs[0].Id);
             Assert.AreEqual(mockAnimalTypes[1].Id, animalTypeDTOs[1].Id);
         }
-        
+
+        [TestMethod]
+        public void GetAnimalTypeById_ShouldReturnAnimal_WhenValidId()
+        {
+            AnimalTypeDTO result = animalTypeManager.GetAnimalTypeById(1);
+            Assert.AreEqual(mockAnimalTypes[0].Id, result.Id);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetUserById_ShouldThrowException_WhenInvalidId()
+        {
+            AnimalTypeDTO result = animalTypeManager.GetAnimalTypeById(100);
+        }
+
     }
 }

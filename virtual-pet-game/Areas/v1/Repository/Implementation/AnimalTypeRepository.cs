@@ -17,7 +17,13 @@ namespace virtual_pet_game.Areas.v1.Repository.Implementation
         {
             this.context = context;
         }
-        public IEnumerable<AnimalType> GetAnimals()
+
+        public AnimalType GetAnimalTypeById(int id)
+        {
+            return context.AnimalTypes.First(x => x.Id == id);
+        }
+
+        public IEnumerable<AnimalType> GetAnimalTypes()
         {
             return context.AnimalTypes;
         }

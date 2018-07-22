@@ -50,10 +50,25 @@ namespace virtual_pet_game.Tests.v1.Repository
         [TestMethod]
         public void GetAnimals_ShouldReturnAnimals_WhenNoId()
         {
-            List<AnimalType> animalTypes = animalTypeRepository.GetAnimals().ToList();
+            List<AnimalType> animalTypes = animalTypeRepository.GetAnimalTypes().ToList();
 
             Assert.AreEqual(mockAnimalTypes.Count, animalTypes.Count);
             Assert.IsTrue(mockAnimalTypes.SequenceEqual(animalTypes));
+        }
+
+        [TestMethod]
+        public void GetAnimalTypesById_ShouldReturnAnimalTypes_WhenValidId()
+        {
+            AnimalType animalType = animalTypeRepository.GetAnimalTypeById(1);
+            Assert.ReferenceEquals(mockAnimalTypes[0], animalType);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetAnimalById_ShouldThrowExcpetion_WhenInvalidId()
+        {
+            //Handled by controller
+            AnimalType animalType = animalTypeRepository.GetAnimalTypeById(100);
         }
 
     }

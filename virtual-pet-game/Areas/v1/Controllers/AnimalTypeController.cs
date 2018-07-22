@@ -20,11 +20,36 @@ namespace virtual_pet_game.Areas.v1.Controllers
             this.animalTypeManager = animalTypeManager;
         }
 
+        [HttpGet]
         public IActionResult Get()
         {
             IEnumerable<AnimalTypeDTO> animalTypes = animalTypeManager.GetAnimalTypes();
 
             return Ok(animalTypes);
+        }
+
+        [HttpGet("{id}", Name = "GetAnimalTypeById")]
+        public IActionResult GetById(int id)
+        {
+            AnimalTypeDTO animalType = null;
+
+            try
+            {
+                animalType = animalTypeManager.GetAnimalTypeById(id);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"{id} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return Ok(animalType);
+
         }
 
     }

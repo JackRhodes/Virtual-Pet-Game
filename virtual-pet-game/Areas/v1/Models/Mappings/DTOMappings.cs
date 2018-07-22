@@ -15,6 +15,7 @@ namespace virtual_pet_game.Areas.v1.Models.Mappings
             CreateMap<User, UserDTO>();
             CreateMap<UserCreationDTO, User>();
             CreateMap<User, UserCreatedDTO>();
+            CreateMap<AnimalType, AnimalTypeDTO>();
         }
     }
 }
