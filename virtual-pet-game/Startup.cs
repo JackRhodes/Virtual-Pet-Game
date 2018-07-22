@@ -15,6 +15,8 @@ using virtual_pet_game.Areas.v1.Data;
 using virtual_pet_game.Areas.v1.Managers.Contracts;
 using virtual_pet_game.Areas.v1.Managers.Implementation;
 using virtual_pet_game.Areas.v1.Models.Mappings;
+using virtual_pet_game.Areas.v1.Repository.Contracts;
+using virtual_pet_game.Areas.v1.Repository.Implementation;
 using virtual_pet_game_Areas.v1.Repository.Contracts;
 using virtual_pet_game_Areas.v1.Repository.Implementation;
 
@@ -77,6 +79,8 @@ namespace virtual_pet_game
             services.AddSingleton<IContext, StubDataContext>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<IAnimalTypeRepository, AnimalTypeRepository>();
+            services.AddTransient<IAnimalTypeManager, AnimalTypeManager>();
             services.AddAutoMapper();
         }
 

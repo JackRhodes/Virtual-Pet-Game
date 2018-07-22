@@ -6,7 +6,7 @@ using virtual_pet_game.Areas.v1.Models.Data;
 
 namespace virtual_pet_game.Areas.v1.Data
 {
-    public class StubDataContext:IContext
+    public class StubDataContext : IContext
     {
         public List<User> Users { get; set; } = new List<User>()
         {
@@ -26,6 +26,26 @@ namespace virtual_pet_game.Areas.v1.Data
              LastName = "Presley",
              Password = "foofooBar"
             },
+
+        };
+        public List<AnimalType> AnimalTypes { get; set; } = new List<AnimalType>()
+        {
+            new AnimalType()
+            {
+                Id= 1,
+                AnimalTypeName = "Doggo",
+                HappinessDeductionRate = 2,
+                HungerIncreaseRate = 3
+
+            },
+
+            new AnimalType()
+            {
+                Id = 2,
+                AnimalTypeName = "Cat",
+                HappinessDeductionRate = 4,
+                HungerIncreaseRate = 2
+            }
 
         };
     }
