@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "virtual-pet-game", "virtual-pet-game\virtual-pet-game.csproj", "{1D4F7668-D880-46B9-8E52-A11FD37A604A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "virtual-pet-game.Tests", "virtual-pet-game.Tests\virtual-pet-game.Tests.csproj", "{3D745B76-6640-48AE-8DE7-7E3BB3379340}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D4F7668-D880-46B9-8E52-A11FD37A604A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D4F7668-D880-46B9-8E52-A11FD37A604A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D4F7668-D880-46B9-8E52-A11FD37A604A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D4F7668-D880-46B9-8E52-A11FD37A604A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D745B76-6640-48AE-8DE7-7E3BB3379340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D745B76-6640-48AE-8DE7-7E3BB3379340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D745B76-6640-48AE-8DE7-7E3BB3379340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D745B76-6640-48AE-8DE7-7E3BB3379340}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B1F74A18-51B4-4FDB-81CB-01B6898834AB}
+	EndGlobalSection
+EndGlobal
