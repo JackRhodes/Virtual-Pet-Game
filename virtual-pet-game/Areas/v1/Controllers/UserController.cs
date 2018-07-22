@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using virtual_pet_game.Areas.v1.Models.DTO;
 
 namespace virtual_pet_game.Areas.v1.Controllers
 {
@@ -15,7 +16,23 @@ namespace virtual_pet_game.Areas.v1.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("You have reached the UserController");
+            IEnumerable<UserDTO> users = new List<UserDTO>()
+            {
+                new UserDTO()
+                {
+                    FirstName = "Jack",
+                    LastName = "Rhodes"
+                },
+
+                new UserDTO()
+                {
+                    FirstName = "Elvis",
+                    LastName = "Presley"
+                }
+                
+            };
+
+            return Ok(users);
         }
         
     }

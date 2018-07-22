@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using virtual_pet_game.Areas.v1.Controllers;
+using virtual_pet_game.Areas.v1.Models.DTO;
 
 namespace virtual_pet_game.Tests
 {
@@ -23,7 +25,13 @@ namespace virtual_pet_game.Tests
 
             Assert.IsNotNull(response);
             Assert.AreEqual(200, response.StatusCode);
-            Assert.AreEqual("You have reached the UserController", response.Value);
+
+            List<UserDTO> userDTOs = response.Value as List<UserDTO>;
+
+            Assert.AreEqual("Jack", userDTOs[0].FirstName);
+            Assert.AreEqual("Rhodes", userDTOs[0].LastName);
+            Assert.AreEqual("Elvis", userDTOs[1].FirstName);
+            Assert.AreEqual("Presley", userDTOs[1].LastName);
         }
     }
 }
