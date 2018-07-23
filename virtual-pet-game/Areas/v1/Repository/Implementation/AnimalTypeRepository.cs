@@ -33,5 +33,10 @@ namespace virtual_pet_game.Areas.v1.Repository.Implementation
             context.AnimalTypes.Add(animalType);
             return GetAnimalTypeById(animalType.Id);
         }
+
+        public void DeleteAnimalType(AnimalType animalType)
+        {
+            context.AnimalTypes.Remove(animalType);
+        }
     }
 }

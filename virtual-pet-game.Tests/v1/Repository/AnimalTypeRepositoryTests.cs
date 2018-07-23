@@ -96,5 +96,15 @@ namespace virtual_pet_game.Tests.v1.Repository
             Assert.AreEqual(animalType.HungerIncreaseRate, returnValue.HungerIncreaseRate);
         }
 
+        [TestMethod]
+        public void DeleteAnimalType_ShouldRemoveAnimal_WhenValid()
+        {
+            Assert.AreEqual(2, mockAnimalTypes.Count);
+            AnimalType animalTypeToRemove = animalTypeRepository.GetAnimalTypeById(1);
+            animalTypeRepository.DeleteAnimalType(animalTypeToRemove);
+            Assert.AreEqual(1, animalTypeRepository.GetAnimalTypes().Count());
+            
+        }
+
     }
 }

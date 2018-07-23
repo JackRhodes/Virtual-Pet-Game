@@ -106,5 +106,20 @@ namespace virtual_pet_game.Tests.v1.Managers
             Assert.AreEqual(3, returnValue.Id);
         }
 
+        [TestMethod]
+        public void DeleteAnimalType_ShouldRemoveAnimalType_WhenValid()
+        {
+            Assert.AreEqual(2, mockAnimalTypes.Count);
+            animalTypeManager.DeleteAnimalType(1);
+            Assert.AreEqual(1, animalTypeManager.GetAnimalTypes().Count());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void DeleteAnimalType_ShouldThrowInvalidOperationException_WhenInvalidId()
+        {
+            animalTypeManager.DeleteAnimalType(124234);
+        }
+
     }
 }

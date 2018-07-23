@@ -131,5 +131,26 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.AreEqual(animalTypeCreation.HungerIncreaseRate, animalTypeCreatedDTO.HungerIncreaseRate);
         }
 
+        [TestMethod]
+        public void DeleteAnimalType_ShouldReturn204_WhenValidId()
+        {
+            var result = animalTypeController.Delete(1);
+            var response = result as NoContentResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(204, response.StatusCode);
+        }
+
+
+        [TestMethod]
+        public void DeleteAnimalType_ShouldReturnBadRequest_WhenInvalidId()
+        {
+            var result = animalTypeController.Delete(1234234234);
+            var response = result as BadRequestResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(400, response.StatusCode);
+        }
+
     }
 }

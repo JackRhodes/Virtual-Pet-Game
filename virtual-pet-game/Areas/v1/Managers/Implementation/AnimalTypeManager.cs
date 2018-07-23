@@ -31,6 +31,27 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             return returnValue;
         }
 
+        public void DeleteAnimalType(int id)
+        {
+            AnimalType animalType = null;
+            try
+            {
+                // I don't need to convert to a DTO therefore am calling repo rather than manager
+                animalType = animalTypeRepository.GetAnimalTypeById(id);
+            }
+            //I am using .First therefore it can throw Exceptions
+            //FirstOrDefault returns in the Default Value therefore am not using
+            catch (InvalidOperationException)
+            {
+                //Handled in controller
+                throw;
+            }
+            if (animalType != null)
+                animalTypeRepository.DeleteAnimalType(animalType);
+            else //Internal Server Error
+                throw new Exception();
+        }
+
         public AnimalTypeDTO GetAnimalTypeById(int id)
         {
             AnimalType animalType = animalTypeRepository.GetAnimalTypeById(id);
@@ -42,7 +63,7 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
         public IEnumerable<AnimalTypeDTO> GetAnimalTypes()
         {
             IEnumerable<AnimalType> response = animalTypeRepository.GetAnimalTypes();
-            IEnumerable <AnimalTypeDTO> returnValue =  Mapper.Map<IEnumerable<AnimalTypeDTO>>(response);
+            IEnumerable<AnimalTypeDTO> returnValue = Mapper.Map<IEnumerable<AnimalTypeDTO>>(response);
 
             return returnValue;
         }

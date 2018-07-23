@@ -66,5 +66,26 @@ namespace virtual_pet_game.Areas.v1.Controllers
             return CreatedAtRoute("GetAnimalTypeById", new { id = returnValue.Id }, returnValue);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                animalTypeManager.DeleteAnimalType(id);
+            }
+
+            catch(InvalidOperationException)
+            {
+                return BadRequest();
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return NoContent();
+        }
+
     }
 }

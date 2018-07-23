@@ -9,5 +9,7 @@ namespace virtual_pet_game.Areas.v1.Managers.Contracts
         AnimalTypeDTO GetAnimalTypeById(int id);
 
         AnimalTypeCreatedDTO CreateAnimalType(AnimalTypeCreationDTO animalTypeCreationDTO);
+
+        void DeleteAnimalType(int id);
     }
 }
