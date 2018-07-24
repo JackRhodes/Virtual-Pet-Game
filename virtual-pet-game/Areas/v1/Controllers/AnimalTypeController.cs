@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using virtual_pet_game.Areas.v1.Managers.Contracts;
 using virtual_pet_game.Areas.v1.Models.DTO;
@@ -15,7 +16,7 @@ namespace virtual_pet_game.Areas.v1.Controllers
     {
         private readonly IAnimalTypeManager animalTypeManager;
 
-        public AnimalTypeController(IAnimalTypeManager animalTypeManager )
+        public AnimalTypeController(IAnimalTypeManager animalTypeManager)
         {
             this.animalTypeManager = animalTypeManager;
         }
@@ -74,7 +75,7 @@ namespace virtual_pet_game.Areas.v1.Controllers
                 animalTypeManager.DeleteAnimalType(id);
             }
 
-            catch(InvalidOperationException)
+            catch (InvalidOperationException)
             {
                 return BadRequest();
             }
@@ -111,6 +112,42 @@ namespace virtual_pet_game.Areas.v1.Controllers
 
             //As per API standards, returning NoContent();
             //Personally I think it should return a 201
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult PartialUpdate(int id, [FromBody] JsonPatchDocument<AnimalTypeCreationDTO> patch)
+        {
+
+            AnimalTypeCreationDTO animalTypeCreationDTO = null;
+
+            if (patch == null)
+                return BadRequest();
+            try
+            {
+                animalTypeCreationDTO = animalTypeManager.GetFullAnimalTypeById(id);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"{id} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            //Was initially going to add this as a manager method, however model state is built into controller making it much easier to handle here.
+            patch.ApplyTo(animalTypeCreationDTO, ModelState);
+
+            TryValidateModel(animalTypeCreationDTO);
+            //If the updated model state is invalid, return bad request.
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            animalTypeManager.UpdateAnimalType(id, animalTypeCreationDTO);
+
             return NoContent();
         }
 

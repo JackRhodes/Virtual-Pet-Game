@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using virtual_pet_game.Areas.v1.Controllers;
@@ -41,7 +44,7 @@ namespace virtual_pet_game.Tests.v1.Controllers
         private IAnimalTypeRepository animalTypeRepository;
         private IAnimalTypeManager animalTypeManager;
         private AnimalTypeController animalTypeController;
-       
+
         [TestInitialize]
         public void TestSetup()
         {
@@ -152,7 +155,7 @@ namespace virtual_pet_game.Tests.v1.Controllers
                 HappinessDeductionRate = 9,
                 HungerIncreaseRate = 3
             };
-            
+
             var result = animalTypeController.Update(1, animalType);
             var response = result as NoContentResult;
 
@@ -171,6 +174,90 @@ namespace virtual_pet_game.Tests.v1.Controllers
         public void UpdatedAnimalType_ShouldReturn404_WhenCalledWithInvalidId()
         {
             var result = animalTypeController.GetById(100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("100 was not found", response.Value);
+        }
+
+        [TestMethod]
+        public void PartialUpdatedAnimalType_ShouldReturn204_WhenCalledWithValidRequest()
+        {
+            AnimalTypeCreationDTO animalTypePatch = new AnimalTypeCreationDTO()
+            {
+                AnimalTypeName = "Rabbit",
+                HappinessDeductionRate = 2,
+                HungerIncreaseRate = 3
+            };
+
+            string newName = "Rabbit";
+
+            var patch = new JsonPatchDocument<AnimalTypeCreationDTO>();
+            patch.Add(x => x.AnimalTypeName, newName);
+
+
+            // https://github.com/aspnet/Mvc/issues/3586 
+            //TryValidateModel breaks on Unit Tests
+
+            var objectValidator = new Mock<IObjectModelValidator>();
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                                              It.IsAny<ValidationStateDictionary>(),
+                                              It.IsAny<string>(),
+                                              It.IsAny<Object>()));
+            animalTypeController.ObjectValidator = objectValidator.Object;
+
+
+            var result = animalTypeController.PartialUpdate(1, patch);
+            var response = result as NoContentResult;
+
+            //Check if a response was received
+            Assert.IsNotNull(response);
+
+            var returnResult = animalTypeController.GetById(1);
+            var returnResponse = returnResult as OkObjectResult;
+
+            var returnValue = returnResponse.Value as AnimalTypeDTO;
+
+            Assert.AreEqual(newName, returnValue.AnimalTypeName);
+        }
+
+        [TestMethod]
+        public void PartialUpdatedAnimalType_ShouldReturn400_WhenCalledWithInvalidRequest()
+        {
+           //TryValidateModel is broken, I cannot unit test it.
+           
+        }
+
+        [TestMethod]
+        public void PartialUpdateAnimalType_ShouldReturn404_WhenCalledWithInvalidId()
+        {
+
+            AnimalTypeCreationDTO animalTypePatch = new AnimalTypeCreationDTO()
+            {
+                AnimalTypeName = "Rabbit",
+                HappinessDeductionRate = 2,
+                HungerIncreaseRate = 3
+            };
+
+            string newName = "Rabbit";
+
+            var patch = new JsonPatchDocument<AnimalTypeCreationDTO>();
+            patch.Add(x => x.AnimalTypeName, newName);
+            
+            // https://github.com/aspnet/Mvc/issues/3586 
+            //TryValidateModel breaks on Unit Tests
+
+            var objectValidator = new Mock<IObjectModelValidator>();
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                                              It.IsAny<ValidationStateDictionary>(),
+                                              It.IsAny<string>(),
+                                              It.IsAny<Object>()));
+            animalTypeController.ObjectValidator = objectValidator.Object;
+
+
+            var result = animalTypeController.PartialUpdate(100, patch);
+            
             var response = result as NotFoundObjectResult;
 
             Assert.IsNotNull(response);

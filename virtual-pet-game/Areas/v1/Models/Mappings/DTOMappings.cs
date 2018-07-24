@@ -18,7 +18,8 @@ namespace virtual_pet_game.Areas.v1.Models.Mappings
             CreateMap<AnimalType, AnimalTypeDTO>();
             CreateMap<AnimalTypeCreationDTO, AnimalType>()
                 .ReverseMap();
-            CreateMap<AnimalType, AnimalTypeCreatedDTO>();
+            CreateMap<AnimalType, AnimalTypeCreatedDTO>()
+                .ReverseMap();
         }
     }
 }

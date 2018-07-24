@@ -68,6 +68,14 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             return returnValue;
         }
 
+        public AnimalTypeCreationDTO GetFullAnimalTypeById(int id)
+        {
+            AnimalType animalType = animalTypeRepository.GetAnimalTypeById(id);
+            AnimalTypeCreationDTO returnValue = Mapper.Map<AnimalTypeCreationDTO>(animalType);
+
+            return returnValue;
+        }
+
         public AnimalTypeCreatedDTO UpdateAnimalType(int id, AnimalTypeCreationDTO updatedAnimalType)
         {
             try

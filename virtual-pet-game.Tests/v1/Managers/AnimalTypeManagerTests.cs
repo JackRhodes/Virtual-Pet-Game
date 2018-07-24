@@ -148,5 +148,22 @@ namespace virtual_pet_game.Tests.v1.Managers
             AnimalTypeCreatedDTO updatedAnimalType = animalTypeManager.UpdateAnimalType(34534, animalTypeCreationDTO);
         }
 
+        [TestMethod]
+        public void GetFullAnimalTypeById_ShouldReturnFullAnimalType_WhenValidId ()
+        {
+            AnimalTypeCreationDTO result = animalTypeManager.GetFullAnimalTypeById(1);
+            Assert.AreEqual(mockAnimalTypes[0].AnimalTypeName, result.AnimalTypeName);
+            Assert.AreEqual(mockAnimalTypes[0].HappinessDeductionRate, result.HappinessDeductionRate);
+            Assert.AreEqual(mockAnimalTypes[0].HungerIncreaseRate, result.HungerIncreaseRate);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetFullAnimalTypeById_ShouldThrowException_WhenInvalidId()
+        {
+            AnimalTypeCreationDTO result = animalTypeManager.GetFullAnimalTypeById(100);
+        }
+
     }
 }
