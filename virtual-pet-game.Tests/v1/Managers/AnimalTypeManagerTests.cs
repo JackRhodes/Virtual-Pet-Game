@@ -121,5 +121,41 @@ namespace virtual_pet_game.Tests.v1.Managers
             animalTypeManager.DeleteAnimalType(124234);
         }
 
+        [TestMethod]
+        public void UpdateAnimalType_ShouldUpdateAnimalType_WhenValid()
+        {
+            AnimalTypeCreationDTO animalTypeCreationDTO = new AnimalTypeCreationDTO()
+            {
+                AnimalTypeName = "Good Pupper",
+                HappinessDeductionRate = 4,
+                HungerIncreaseRate = 5
+            };
+
+
+            AnimalTypeCreatedDTO updatedAnimalType = animalTypeManager.UpdateAnimalType(1, animalTypeCreationDTO);
+
+            Assert.AreEqual(animalTypeCreationDTO.AnimalTypeName, updatedAnimalType.AnimalTypeName);
+            Assert.AreEqual(animalTypeCreationDTO.HappinessDeductionRate, updatedAnimalType.HappinessDeductionRate);
+            Assert.AreEqual(animalTypeCreationDTO.HungerIncreaseRate, updatedAnimalType.HungerIncreaseRate);
+
+            AnimalTypeDTO animalTypeDTO = animalTypeManager.GetAnimalTypeById(1);
+
+            Assert.AreEqual("Good Pupper", animalTypeDTO.AnimalTypeName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void UpdateAnimalType_ShouldReturnExcpetion_WhenInvalidId()
+        {
+            AnimalTypeCreationDTO animalTypeCreationDTO = new AnimalTypeCreationDTO()
+            {
+                AnimalTypeName = "Good Pupper",
+                HappinessDeductionRate = 4,
+                HungerIncreaseRate = 5
+            };
+
+            AnimalTypeCreatedDTO updatedAnimalType = animalTypeManager.UpdateAnimalType(34534, animalTypeCreationDTO);
+        }
+
     }
 }

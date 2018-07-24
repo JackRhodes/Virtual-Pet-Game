@@ -68,6 +68,32 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             return returnValue;
         }
 
+        public AnimalTypeCreatedDTO UpdateAnimalType(int id, AnimalTypeCreationDTO updatedAnimalType)
+        {
+            try
+            {
+                animalTypeRepository.GetAnimalTypeById(id);
+            }
+            //Handled by controller logic
+            catch(InvalidOperationException)
+            {
+                throw;
+            }
+            //Unexpected result, throw internal server error
+            catch(Exception)
+            {
+                throw;
+            }
+
+            AnimalType animalType = Mapper.Map<AnimalType>(updatedAnimalType);
+            //Not needed if using EF database with sequential column
+            animalType.Id = id;
+
+            AnimalTypeCreatedDTO returnValue =  Mapper.Map<AnimalTypeCreatedDTO>(animalTypeRepository.UpdateAnimalType(id,animalType));
+            
+            return returnValue;
+        }
+
         //Not needed when Database with sequential fields, added as using in memory database.
         private int GetNextId()
         {

@@ -54,6 +54,25 @@ namespace virtual_pet_game.Tests.v1.Repository
 
             Assert.AreEqual(mockAnimalTypes.Count, animalTypes.Count);
             Assert.IsTrue(mockAnimalTypes.SequenceEqual(animalTypes));
+
+            AnimalType updatedAnimalType = new AnimalType()
+            {
+                Id = 1,
+                AnimalTypeName = "Doggy",
+                HappinessDeductionRate = 9,
+                HungerIncreaseRate = 8
+
+            };
+            animalTypeRepository.UpdateAnimalType(1, updatedAnimalType);
+            
+            animalTypes = animalTypeRepository.GetAnimalTypes().ToList();
+
+            //When a value is amended, the Repo should maintian order by Id
+            for (int i = 0; i<mockAnimalTypes.Count; i++)
+            {
+                Assert.AreEqual(i + 1, animalTypes[i].Id);
+            }
+
         }
 
         [TestMethod]
@@ -104,6 +123,28 @@ namespace virtual_pet_game.Tests.v1.Repository
             animalTypeRepository.DeleteAnimalType(animalTypeToRemove);
             Assert.AreEqual(1, animalTypeRepository.GetAnimalTypes().Count());
             
+        }
+
+        [TestMethod]
+        public void UpdateAnimalType_ShouldAddNewAnimalType_WhenValid()
+        {
+            int count = animalTypeRepository.GetAnimalTypes().Count();
+
+            AnimalType updatedAnimalType = new AnimalType()
+            {
+                Id = 1,
+                AnimalTypeName = "Doggy",
+                HappinessDeductionRate = 9,
+                HungerIncreaseRate = 8
+
+            };
+
+            animalTypeRepository.UpdateAnimalType(1, updatedAnimalType);
+            Assert.AreEqual(count, animalTypeRepository.GetAnimalTypes().Count());
+            Assert.ReferenceEquals(animalTypeRepository.GetAnimalTypeById(1), updatedAnimalType);
+            
+            //Order maintained - FAILED - GetAnimalTypes will be changed to order correctly
+            //Assert.AreEqual(1, animalTypeRepository.GetAnimalTypes().First().Id);
         }
 
     }

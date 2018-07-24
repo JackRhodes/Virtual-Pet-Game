@@ -96,7 +96,7 @@ namespace virtual_pet_game.Tests.v1.Controllers
         }
 
         [TestMethod]
-        public void GetUserById_Should404_WhenCalledWithInvalidId()
+        public void GetAnimalTypeById_Should404_WhenCalledWithInvalidId()
         {
             var result = animalTypeController.GetById(100);
             var response = result as NotFoundObjectResult;
@@ -150,6 +150,41 @@ namespace virtual_pet_game.Tests.v1.Controllers
 
             Assert.IsNotNull(response);
             Assert.AreEqual(400, response.StatusCode);
+        }
+
+        [TestMethod]
+        public void UpdateAnimalType_ShouldReturn204_WhenValidId()
+        {
+            AnimalTypeCreationDTO animalType = new AnimalTypeCreationDTO()
+            {
+                AnimalTypeName = "Lovely Doggo",
+                HappinessDeductionRate = 9,
+                HungerIncreaseRate = 3
+            };
+            
+            var result = animalTypeController.Update(1, animalType);
+            var response = result as NoContentResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(204, response.StatusCode);
+
+            var getResult = animalTypeController.GetById(1);
+            var getResponse = getResult as OkObjectResult;
+
+            var getValue = getResponse.Value as AnimalTypeDTO;
+
+            Assert.AreEqual(animalType.AnimalTypeName, getValue.AnimalTypeName);
+        }
+
+        [TestMethod]
+        public void UpdatedAnimalType_ShouldReturn404_WhenCalledWithInvalidId()
+        {
+            var result = animalTypeController.GetById(100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("100 was not found", response.Value);
         }
 
     }

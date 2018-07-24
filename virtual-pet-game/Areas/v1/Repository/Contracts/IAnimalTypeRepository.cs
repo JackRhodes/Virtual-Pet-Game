@@ -15,5 +15,7 @@ namespace virtual_pet_game.Areas.v1.Repository.Contracts
         AnimalType CreateAnimalType(AnimalType animalType);
 
         void DeleteAnimalType(AnimalType animalType);
+
+        AnimalType UpdateAnimalType(int id, AnimalType animalType);
     }
 }

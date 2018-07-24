@@ -25,7 +25,7 @@ namespace virtual_pet_game.Areas.v1.Repository.Implementation
 
         public IEnumerable<AnimalType> GetAnimalTypes()
         {
-            return context.AnimalTypes;
+            return context.AnimalTypes.OrderBy(x=>x.Id);
         }
 
         public AnimalType CreateAnimalType(AnimalType animalType)
@@ -37,6 +37,24 @@ namespace virtual_pet_game.Areas.v1.Repository.Implementation
         public void DeleteAnimalType(AnimalType animalType)
         {
             context.AnimalTypes.Remove(animalType);
+        }
+
+        public AnimalType UpdateAnimalType(int id, AnimalType animalType)
+        {
+            //With EFCore, I'd use the inbuilt Update methods.
+            //I am replacing the list as System.Collection.Generic defined types are readonly.
+            //The add method effectivly is the same as making a new list and changing the pointer.
+            
+            //I do not want the default value
+            AnimalType result = context.AnimalTypes.First(x => x.Id == id);
+            //Remove the result
+            context.AnimalTypes.Remove(result);
+            //Add the updated result
+            context.AnimalTypes.Add(animalType);
+           
+            //Order is not maintained due to the limitation of lists not having an update method
+            
+            return context.AnimalTypes.First(x => x.Id == id);
         }
     }
 }

@@ -87,5 +87,32 @@ namespace virtual_pet_game.Areas.v1.Controllers
             return NoContent();
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] AnimalTypeCreationDTO animalType)
+        {
+            if (animalType == null)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                var returnValue = animalTypeManager.UpdateAnimalType(id, animalType);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound($"{id} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            //As per API standards, returning NoContent();
+            //Personally I think it should return a 201
+            return NoContent();
+        }
+
     }
 }
