@@ -1,7 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using virtual_pet_game.Areas.v1.Models.DTO;
 using virtual_pet_game.Tests.v1.Models.Helper;
 
@@ -10,12 +7,9 @@ namespace virtual_pet_game.Tests.v1.Models
     [TestClass]
     public class AnimalTypeCreationDTOTests
     {
-        HelperMethods helper;
-
         [TestInitialize]
         public void TestSetup()
         {
-            helper = new HelperMethods();
         }
         [TestMethod]
         public void AnimalTypeCreationDTO_ShouldFailModelValidation_WhenRequiredFieldNotEntered()
@@ -25,7 +19,7 @@ namespace virtual_pet_game.Tests.v1.Models
                 AnimalTypeName = "Rabbit"
             };
 
-            bool result = helper.CheckModelValidation(animalTypeCreationDTO);
+            bool result = HelperMethods.CheckModelValidation(animalTypeCreationDTO);
 
             Assert.IsFalse(result);
         }
@@ -33,7 +27,7 @@ namespace virtual_pet_game.Tests.v1.Models
         [TestMethod]
         public void AnimalTypeCreationDTO_ShouldFailModelValidation_WhenFieldsOverMaxLength()
         {
-            string largeString = helper.GenerateLargeString(100);
+            string largeString = HelperMethods.GenerateLargeString(100);
 
             AnimalTypeCreationDTO animalTypeCreation = new AnimalTypeCreationDTO()
             {
@@ -42,7 +36,7 @@ namespace virtual_pet_game.Tests.v1.Models
                 HungerIncreaseRate = 1
             };
 
-            bool result = helper.CheckModelValidation(animalTypeCreation);
+            bool result = HelperMethods.CheckModelValidation(animalTypeCreation);
 
             Assert.IsFalse(result);
 
@@ -53,7 +47,7 @@ namespace virtual_pet_game.Tests.v1.Models
                 HungerIncreaseRate = 1
             };
 
-            result = helper.CheckModelValidation(animalTypeCreation);
+            result = HelperMethods.CheckModelValidation(animalTypeCreation);
 
             Assert.IsFalse(result);
 
@@ -64,7 +58,7 @@ namespace virtual_pet_game.Tests.v1.Models
                 HungerIncreaseRate = 100
             };
 
-            result = helper.CheckModelValidation(animalTypeCreation);
+            result = HelperMethods.CheckModelValidation(animalTypeCreation);
 
         }
 
@@ -78,7 +72,7 @@ namespace virtual_pet_game.Tests.v1.Models
                 HungerIncreaseRate = 1
             };
 
-            bool result = helper.CheckModelValidation(AnimalTypeCreation);
+            bool result = HelperMethods.CheckModelValidation(AnimalTypeCreation);
 
             Assert.IsTrue(result);
         }

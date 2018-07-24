@@ -1,20 +1,17 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using virtual_pet_game.Areas.v1.Controllers;
 using virtual_pet_game.Areas.v1.Data;
 using virtual_pet_game.Areas.v1.Managers.Contracts;
 using virtual_pet_game.Areas.v1.Managers.Implementation;
 using virtual_pet_game.Areas.v1.Models.Data;
 using virtual_pet_game.Areas.v1.Models.DTO;
-using virtual_pet_game.Areas.v1.Models.Mappings;
 using virtual_pet_game.Areas.v1.Repository.Contracts;
 using virtual_pet_game.Areas.v1.Repository.Implementation;
+using virtual_pet_game.Tests.v1.Models.Helper;
 
 namespace virtual_pet_game.Tests.v1.Controllers
 {
@@ -44,18 +41,12 @@ namespace virtual_pet_game.Tests.v1.Controllers
         private IAnimalTypeRepository animalTypeRepository;
         private IAnimalTypeManager animalTypeManager;
         private AnimalTypeController animalTypeController;
-
+       
         [TestInitialize]
         public void TestSetup()
         {
-            Mapper.Reset();
 
-            //As automapper is static, it can be initalised in here to replicate the functionality offered by Startup.cs
-            Mapper.Initialize(x =>
-            {
-                x.AddProfile(new DTOMappings());
-            });
-
+            HelperMethods.InitialiseAutoMapper();
 
             Mock<IContext> context = new Mock<IContext>();
 

@@ -1,21 +1,23 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using virtual_pet_game.Areas.v1.Models.Mappings;
 
 namespace virtual_pet_game.Tests.v1.Models.Helper
 {
-    public class HelperMethods
+    public static class HelperMethods
     {
         /// <summary>
         /// Checks Model to see if it passes Validation
         /// </summary>
         /// <param name="model">Model to check.</param>
         /// <returns>Valid (true) or invalid (false).</returns>
-        public bool CheckModelValidation(object model)
+        public static bool CheckModelValidation(object model)
         {
             //Create a context for the validation.
-            ValidationContext validationContext = new ValidationContext(model, null, null);
+            System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(model, null, null);
             //Create a storage method to store results of the check.
             var result = new List<ValidationResult>();
             //Check whether the Model provided is valid against the context.
@@ -24,7 +26,7 @@ namespace virtual_pet_game.Tests.v1.Models.Helper
             return valid;
         }
 
-        public string GenerateLargeString(int maxValue)
+        public static string GenerateLargeString(int maxValue)
         {
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -39,6 +41,17 @@ namespace virtual_pet_game.Tests.v1.Models.Helper
             }
 
             return stringBuilder.ToString();
+        }
+
+        public static void InitialiseAutoMapper()
+        {
+            Mapper.Reset();
+
+            //As automapper is static, it can be initalised in here to replicate the functionality offered by Startup.cs
+            Mapper.Initialize(x =>
+            {
+                x.AddProfile(new DTOMappings());
+            });
         }
     }
 }

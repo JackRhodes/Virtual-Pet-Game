@@ -1,7 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using virtual_pet_game.Areas.v1.Models.DTO;
 using virtual_pet_game.Tests.v1.Models.Helper;
 
@@ -10,12 +7,10 @@ namespace virtual_pet_game.Tests.v1.Models
     [TestClass]
     public class UserDTOTests
     {
-        HelperMethods helper;
-
         [TestInitialize]
         public void TestSetup()
         {
-            helper = new HelperMethods();
+
         }
         [TestMethod]
         public void UserDTO_ShouldFailModelValidation_WhenRequiredFieldNotEntered()
@@ -25,7 +20,7 @@ namespace virtual_pet_game.Tests.v1.Models
                 FirstName = "Bob"
             };
 
-            bool result = helper.CheckModelValidation(userDTO);
+            bool result = HelperMethods.CheckModelValidation(userDTO);
 
             Assert.AreEqual(false, result);
         }
@@ -34,7 +29,7 @@ namespace virtual_pet_game.Tests.v1.Models
         public void UserDTO_ShouldFailModelValidation_WhenFieldsOverMaxLength()
         {
 
-            string largeString = helper.GenerateLargeString(75);
+            string largeString = HelperMethods.GenerateLargeString(75);
 
             UserDTO userDTO = new UserDTO()
             {
@@ -42,11 +37,11 @@ namespace virtual_pet_game.Tests.v1.Models
                 LastName = "Dough"
             };
 
-            bool result = helper.CheckModelValidation(userDTO);
+            bool result = HelperMethods.CheckModelValidation(userDTO);
 
             Assert.AreEqual(false, result);
 
-            largeString = helper.GenerateLargeString(75);
+            largeString = HelperMethods.GenerateLargeString(75);
 
             userDTO = new UserDTO()
             {
@@ -54,7 +49,7 @@ namespace virtual_pet_game.Tests.v1.Models
                 LastName = largeString
             };
 
-            result = helper.CheckModelValidation(userDTO);
+            result = HelperMethods.CheckModelValidation(userDTO);
 
             Assert.AreEqual(false, result);
         }
@@ -68,7 +63,7 @@ namespace virtual_pet_game.Tests.v1.Models
                 LastName = "Dylan"
             };
 
-            bool result = helper.CheckModelValidation(userDTO);
+            bool result = HelperMethods.CheckModelValidation(userDTO);
 
             Assert.AreEqual(true, result);
         }

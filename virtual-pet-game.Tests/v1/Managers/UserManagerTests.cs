@@ -1,15 +1,13 @@
-﻿using AutoMapper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using virtual_pet_game.Areas.v1.Data;
 using virtual_pet_game.Areas.v1.Managers.Implementation;
 using virtual_pet_game.Areas.v1.Models.Data;
 using virtual_pet_game.Areas.v1.Models.DTO;
-using virtual_pet_game.Areas.v1.Models.Mappings;
+using virtual_pet_game.Tests.v1.Models.Helper;
 using virtual_pet_game_Areas.v1.Repository.Contracts;
 using virtual_pet_game_Areas.v1.Repository.Implementation;
 
@@ -42,19 +40,12 @@ namespace virtual_pet_game.Tests.v1.Managers
         List<UserDTO> expectedResults;
 
         IUserRepository userRepository;
-
+        
         [TestInitialize]
         public void TestSetup()
         {
-            Mapper.Reset();
+            HelperMethods.InitialiseAutoMapper();
 
-            //As automapper is static, it can be initalised in here to replicate the functionality offered by Startup.cs
-            Mapper.Initialize(x =>
-            {
-                x.AddProfile(new DTOMappings());
-            });
-
-            
             Mock<IContext> context = new Mock<IContext>();
 
             context.Setup(x => x.Users).Returns(mockUser);
