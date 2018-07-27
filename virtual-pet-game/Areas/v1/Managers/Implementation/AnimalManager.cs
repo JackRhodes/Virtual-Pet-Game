@@ -65,5 +65,10 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             return maxId + 1;
         }
 
+        public void DeleteAnimal(int animalId)
+        {
+            Animal animal = animalRepository.GetAnimalById(animalId);
+            animalRepository.DeleteAnimal(animal);
+        }
     }
 }

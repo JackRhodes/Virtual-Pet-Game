@@ -138,5 +138,18 @@ namespace virtual_pet_game.Tests.v1.Repository
             Assert.AreEqual(animal.LastChecked, returnValue.LastChecked);
         }
 
+        [TestMethod]
+        public void DeleteAnimal_ShouldRemoveAnimal_WhenValid()
+        {
+            Animal animal = animalRepository.GetAnimalById(1);
+
+            int animalCount = mockAnimals.Count;
+
+            animalRepository.DeleteAnimal(animal);
+
+            Assert.AreEqual(animalCount - 1, mockAnimals.Count);
+            Assert.ThrowsException<InvalidOperationException>(() => animalRepository.GetAnimalById(1));
+        }
+
     }
 }

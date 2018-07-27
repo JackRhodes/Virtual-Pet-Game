@@ -21,6 +21,11 @@ namespace virtual_pet_game.Areas.v1.Repository.Implementation
             return GetAnimalById(animal.Id);
         }
 
+        public void DeleteAnimal(Animal animal)
+        {
+            context.Animals.Remove(animal);
+        }
+
         public Animal GetAnimalById(int id)
         {
             return context.Animals.First(x => x.Id == id);

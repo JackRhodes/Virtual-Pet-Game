@@ -148,5 +148,15 @@ namespace virtual_pet_game.Tests.v1.Managers
             Assert.AreEqual(HelperMethods.DEFAULT_HUNGER, animalDTO.Hunger);
 
         }
+
+        [TestMethod]
+        public void DeleteAnimal_ShouldRemoveAnimal_WhenValid()
+        {
+            int animalCount = mockAnimals.Count;
+            animalManager.DeleteAnimal(1);
+
+            Assert.AreEqual(animalCount - 1, mockAnimals.Count);
+            Assert.ThrowsException<InvalidOperationException>(() => animalRepository.GetAnimalById(1));
+        }
     }
 }

@@ -121,7 +121,7 @@ namespace virtual_pet_game.Tests.v1.Controllers
             animalTypeRepository = new AnimalTypeRepository(context.Object);
             animalTypeManager = new AnimalTypeManager(animalTypeRepository);
 
-            animalController = new AnimalController(userManager,animalManager, animalTypeManager);
+            animalController = new AnimalController(userManager, animalManager, animalTypeManager);
         }
 
         [TestMethod]
@@ -151,11 +151,11 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.AreEqual(200, response.StatusCode);
             Assert.AreEqual(0, animals.Count);
         }
-        
+
         [TestMethod]
         public void GetById_ShouldReturnAnimalDTO_WhenValidId()
         {
-            var result = animalController.GetById(1,1);
+            var result = animalController.GetById(1, 1);
             var response = result as OkObjectResult;
             var responseValue = response.Value as AnimalDTO;
             AnimalDTO animal = responseValue;
@@ -171,7 +171,7 @@ namespace virtual_pet_game.Tests.v1.Controllers
         [TestMethod]
         public void GetAnimalById_ShouldReturn404_WhenCalledWithInvalidAnimalId()
         {
-            var result = animalController.GetById(1,100);
+            var result = animalController.GetById(1, 100);
             var response = result as NotFoundObjectResult;
 
             Assert.IsNotNull(response);
@@ -247,6 +247,47 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.IsNotNull(response);
             Assert.AreEqual(404, response.StatusCode);
             Assert.AreEqual("AnimalType: 100 was not found", response.Value);
+        }
+
+        [TestMethod]
+        public void DeleteAnimal_ShouldReturn204_WhenValid()
+        {
+            int animalCount = mockAnimals.Count;
+            var result = animalController.Delete(1, 1);
+            var response = result as NoContentResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(204, response.StatusCode);
+            Assert.AreEqual(animalCount - 1, mockAnimals.Count);
+        }
+
+        [TestMethod]
+        public void DeleteAnimal_ShouldReturn404_WhenInvalidUserId()
+        {
+            int animalCount = mockAnimals.Count;
+            var result = animalController.Delete(100,1);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("User: 100 was not found", response.Value);
+            //Ensure not deleted
+            Assert.AreEqual(animalCount, mockAnimals.Count);
+        }
+
+
+        [TestMethod]
+        public void DeleteAnimal_ShouldReturn404_WhenInvalidAnimalId()
+        {
+            int animalCount = mockAnimals.Count;
+            var result = animalController.Delete(1, 100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("Animal: 100 was not found", response.Value);
+            //Ensure not deleted
+            Assert.AreEqual(animalCount, mockAnimals.Count);
         }
 
     }

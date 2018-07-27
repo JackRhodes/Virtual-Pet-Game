@@ -132,5 +132,42 @@ namespace virtual_pet_game.Areas.v1.Controllers
 
         }
 
+        [HttpDelete("{userId}/animals/{animalId}")]
+        public IActionResult Delete(int userId, int animalId)
+        {
+            //Check if User exists
+            try
+            {
+                userManager.GetUserById(userId);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"User: {userId} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+            
+            try
+            {
+                animalTypeManager.GetAnimalTypeById(animalId);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound($"Animal: {animalId} was not found");
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            animalManager.DeleteAnimal(animalId);
+
+            return NoContent();
+        }
+
     }
 }
