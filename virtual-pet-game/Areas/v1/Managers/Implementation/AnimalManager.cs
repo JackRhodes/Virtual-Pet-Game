@@ -19,6 +19,15 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             this.animalRepository = animalRepository;
         }
 
+        public AnimalDTO GetAnimalById(int id)
+        {
+            Animal animal = animalRepository.GetAnimalById(id);
+
+            AnimalDTO returnValue = Mapper.Map<AnimalDTO>(animal);
+
+            return returnValue;
+        }
+
         public IEnumerable<AnimalDTO> GetAnimalsByUserId(int id)
         {
             IEnumerable<Animal> animals = animalRepository.GetAnimalsFromUser(id);

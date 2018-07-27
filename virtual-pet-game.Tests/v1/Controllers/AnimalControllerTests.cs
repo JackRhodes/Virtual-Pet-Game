@@ -15,6 +15,7 @@ using virtual_pet_game.Areas.v1.Repository.Contracts;
 using virtual_pet_game.Tests.v1.Models.Helper;
 using virtual_pet_game_Areas.v1.Repository.Contracts;
 using virtual_pet_game_Areas.v1.Repository.Implementation;
+using virtual_pet_game.Areas.v1.Repository.Implementation;
 
 namespace virtual_pet_game.Tests.v1.Controllers
 {
@@ -126,6 +127,43 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.AreEqual(0, animals.Count);
         }
         
+        [TestMethod]
+        public void GetById_ShouldReturnAnimalDTO_WhenValidId()
+        {
+            var result = animalController.GetById(1,1);
+            var response = result as OkObjectResult;
+            var responseValue = response.Value as AnimalDTO;
+            AnimalDTO animal = responseValue;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(200, response.StatusCode);
+            Assert.AreEqual(1, animal.Id);
+            Assert.AreEqual("Gazza", animal.Name);
+            Assert.AreEqual(50, animal.Happiness);
+            Assert.AreEqual(50, animal.Hunger);
+        }
+
+        [TestMethod]
+        public void GetAnimalById_ShouldReturn404_WhenCalledWithInvalidAnimalId()
+        {
+            var result = animalController.GetById(1,100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("Animal: 100 was not found", response.Value);
+        }
+
+        [TestMethod]
+        public void GetAnimalById_ShouldReturn404_WhenCalledWithInvalidUserId()
+        {
+            var result = animalController.GetById(100, 100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("User: 100 was not found", response.Value);
+        }
 
     }
 }

@@ -10,6 +10,7 @@ using virtual_pet_game.Areas.v1.Managers.Implementation;
 using virtual_pet_game.Areas.v1.Models.Data;
 using virtual_pet_game.Areas.v1.Models.DTO;
 using virtual_pet_game.Areas.v1.Repository.Contracts;
+using virtual_pet_game.Areas.v1.Repository.Implementation;
 using virtual_pet_game.Tests.v1.Models.Helper;
 
 namespace virtual_pet_game.Tests.v1.Managers
@@ -106,6 +107,24 @@ namespace virtual_pet_game.Tests.v1.Managers
             List<AnimalDTO> animalDTOs = animalManager.GetAnimalsByUserId(2).ToList();
 
             Assert.AreEqual(0, animalDTOs.Count);
+        }
+
+        [TestMethod]
+        public void GetAnimalsById_ShouldReturnAnimalDTO_WhenValidId()
+        {
+            AnimalDTO animalDTO = animalManager.GetAnimalById(1);
+
+            Assert.AreEqual(1, animalDTO.Id);
+            Assert.AreEqual("Gazza", animalDTO.Name);
+            Assert.AreEqual(50, animalDTO.Happiness);
+            Assert.AreEqual(50, animalDTO.Hunger);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetAnimalsById_ShouldThrowInvalidOperationException_WhenInvalidId()
+        {
+            animalManager.GetAnimalById(123123);
         }
 
     }

@@ -7,6 +7,7 @@ using System.Text;
 using virtual_pet_game.Areas.v1.Data;
 using virtual_pet_game.Areas.v1.Models.Data;
 using virtual_pet_game.Areas.v1.Repository.Contracts;
+using virtual_pet_game.Areas.v1.Repository.Implementation;
 
 namespace virtual_pet_game.Tests.v1.Repository
 {
@@ -91,5 +92,21 @@ namespace virtual_pet_game.Tests.v1.Repository
             IEnumerable<Animal> returnAnimals = animalRepository.GetAnimalsFromUser(2);
             Assert.AreEqual(0, returnAnimals.Count());
         }
+
+        [TestMethod]
+        public void GetAnimalById_ShouldReturnAnimalTypes_WhenValidId()
+        {
+            Animal animal = animalRepository.GetAnimalById(1);
+            Assert.AreEqual(mockAnimals[0].Id, animal.Id);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetAnimalById_ShouldThrowExcpetion_WhenInvalidId()
+        {
+            //Handled by controller
+            Animal animal = animalRepository.GetAnimalById(100);
+        }
+
     }
 }

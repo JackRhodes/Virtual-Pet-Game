@@ -9,5 +9,6 @@ namespace virtual_pet_game.Areas.v1.Repository.Contracts
     public interface IAnimalRepository
     {
         IEnumerable<Animal> GetAnimalsFromUser(int id);
+        Animal GetAnimalById(int id);
     }
 }

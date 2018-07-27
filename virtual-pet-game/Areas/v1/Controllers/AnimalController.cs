@@ -44,5 +44,44 @@ namespace virtual_pet_game.Areas.v1.Controllers
 
             return Ok(animalDTOs);
         }
+
+        [HttpGet("{userId}/animals/{animalId}")]
+        public IActionResult GetById(int userId, int animalId)
+        {
+
+            AnimalDTO animal = null;
+
+            try
+            {
+                userManager.GetUserById(userId);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"User: {userId} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            try
+            {
+                animal = animalManager.GetAnimalById(animalId);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"Animal: {animalId} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return Ok(animal);
+        }
     }
 }

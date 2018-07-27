@@ -9,5 +9,6 @@ namespace virtual_pet_game.Areas.v1.Managers.Contracts
     public interface IAnimalManager
     {
         IEnumerable<AnimalDTO> GetAnimalsByUserId(int id);
+        AnimalDTO GetAnimalById(int id);
     }
 }

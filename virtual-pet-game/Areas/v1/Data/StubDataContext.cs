@@ -61,6 +61,30 @@ namespace virtual_pet_game.Areas.v1.Data
                 Name = "Gazza",
                 UserId = 1
                 
+            },
+
+             new Animal()
+            {
+                Id = 2,
+                AnimalTypeId = 1,
+                Happiness = 50,
+                Hunger = 50,
+                LastChecked = DateTime.Now,
+                Name = "Barlow",
+                UserId = 1
+
+            },
+
+             new Animal()
+            {
+                Id = 3,
+                AnimalTypeId = 1,
+                Happiness = 50,
+                Hunger = 50,
+                LastChecked = DateTime.Now,
+                Name = "Mickey",
+                UserId = 1
+
             }
         };
     }
