@@ -10,5 +10,11 @@ namespace virtual_pet_game.Areas.v1.Repository.Contracts
     {
         IEnumerable<Animal> GetAnimalsFromUser(int id);
         Animal GetAnimalById(int id);
+        Animal CreateAnimal(Animal animal);
+        /// <summary>
+        /// Not required with sequential database
+        /// </summary>
+        /// <returns></returns>
+        int GetNumberOfAnimals();
     }
 }

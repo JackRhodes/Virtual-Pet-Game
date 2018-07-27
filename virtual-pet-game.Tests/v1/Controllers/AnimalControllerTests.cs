@@ -71,11 +71,32 @@ namespace virtual_pet_game.Tests.v1.Controllers
 
         };
 
+        public List<AnimalType> mockAnimalTypes = new List<AnimalType>()
+        {
+            new AnimalType()
+            {
+                Id = 1,
+                AnimalTypeName = "Doggo",
+                HappinessDeductionRate = 2,
+                HungerIncreaseRate = 3
+
+            },
+            new AnimalType()
+            {
+                Id = 2,
+                AnimalTypeName = "Cat",
+                HappinessDeductionRate = 4,
+                HungerIncreaseRate = 2
+            }
+
+        };
 
         IAnimalRepository animalRepository;
         IAnimalManager animalManager;
         IUserManager userManager;
         IUserRepository userRepository;
+        IAnimalTypeManager animalTypeManager;
+        IAnimalTypeRepository animalTypeRepository;
         AnimalController animalController;
 
         [TestInitialize]
@@ -87,6 +108,7 @@ namespace virtual_pet_game.Tests.v1.Controllers
 
             context.Setup(x => x.Animals).Returns(mockAnimals);
             context.Setup(x => x.Users).Returns(mockUsers);
+            context.Setup(x => x.AnimalTypes).Returns(mockAnimalTypes);
 
             animalRepository = new AnimalRepository(context.Object);
 
@@ -96,7 +118,10 @@ namespace virtual_pet_game.Tests.v1.Controllers
 
             userManager = new UserManager(userRepository);
 
-            animalController = new AnimalController(userManager,animalManager);
+            animalTypeRepository = new AnimalTypeRepository(context.Object);
+            animalTypeManager = new AnimalTypeManager(animalTypeRepository);
+
+            animalController = new AnimalController(userManager,animalManager, animalTypeManager);
         }
 
         [TestMethod]
@@ -163,6 +188,65 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.IsNotNull(response);
             Assert.AreEqual(404, response.StatusCode);
             Assert.AreEqual("User: 100 was not found", response.Value);
+        }
+
+        [TestMethod]
+        public void CreateAnimal_ShouldReturn200_WhenValidUser()
+        {
+            AnimalCreationDTO animalCreationDTO = new AnimalCreationDTO()
+            {
+                AnimalTypeId = 1,
+                Name = "Johnny"
+            };
+
+            var result = animalController.Create(1, animalCreationDTO);
+            var response = result as CreatedAtRouteResult;
+            Assert.AreEqual(201, response.StatusCode);
+            Assert.AreEqual("GetAnimalById", response.RouteName);
+            Assert.IsTrue(response.Value is AnimalDTO);
+
+            AnimalDTO responseValue = response.Value as AnimalDTO;
+
+            Assert.AreEqual(animalCreationDTO.Name, responseValue.Name);
+            Assert.AreEqual(animalCreationDTO.AnimalTypeId, responseValue.AnimalTypeId);
+            Assert.AreEqual(HelperMethods.DEFAULT_HAPPINESS, responseValue.Happiness);
+            Assert.AreEqual(HelperMethods.DEFAULT_HUNGER, responseValue.Hunger);
+            Assert.AreEqual(mockAnimals.Count, responseValue.Id);
+        }
+
+        [TestMethod]
+        public void CreateAnimal_ShouldReturn404_WhenInvalidUser()
+        {
+            AnimalCreationDTO animalCreationDTO = new AnimalCreationDTO()
+            {
+                AnimalTypeId = 1,
+                Name = "Johnny"
+            };
+
+            var result = animalController.Create(100, animalCreationDTO);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("User: 100 was not found", response.Value);
+        }
+
+
+        [TestMethod]
+        public void CreateAnimal_ShouldReturn404_WhenInvalidAnimalType()
+        {
+            AnimalCreationDTO animalCreationDTO = new AnimalCreationDTO()
+            {
+                AnimalTypeId = 100,
+                Name = "Johnny"
+            };
+
+            var result = animalController.Create(1, animalCreationDTO);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("AnimalType: 100 was not found", response.Value);
         }
 
     }

@@ -108,5 +108,35 @@ namespace virtual_pet_game.Tests.v1.Repository
             Animal animal = animalRepository.GetAnimalById(100);
         }
 
+
+        [TestMethod]
+        public void CreateAnimal_ShouldCreateAnimal_WhenValid()
+        {
+            Animal animal = new Animal()
+            {
+                Id = 3,
+                AnimalTypeId = 1,
+                Happiness = 50,
+                Hunger = 50,
+                LastChecked = DateTime.Now,
+                Name = "Antonio",
+                UserId = 2
+            };
+
+            int animalCount = animalRepository.GetAnimalsFromUser(2).Count();
+
+            Animal returnValue = animalRepository.CreateAnimal(animal);
+
+            Assert.AreEqual(0, animalCount);
+            animalCount = animalRepository.GetAnimalsFromUser(2).Count();
+            Assert.AreEqual(1, animalCount);
+            Assert.AreEqual(animal.Id, returnValue.Id);
+            Assert.AreEqual(animal.AnimalTypeId, returnValue.AnimalTypeId);
+            Assert.AreEqual(animal.Happiness, returnValue.Happiness);
+            Assert.AreEqual(animal.Hunger, returnValue.Hunger);
+            Assert.AreEqual(animal.UserId, returnValue.UserId);
+            Assert.AreEqual(animal.LastChecked, returnValue.LastChecked);
+        }
+
     }
 }

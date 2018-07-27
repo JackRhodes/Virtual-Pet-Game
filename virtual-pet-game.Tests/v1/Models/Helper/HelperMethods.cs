@@ -53,5 +53,8 @@ namespace virtual_pet_game.Tests.v1.Models.Helper
                 x.AddProfile(new DTOMappings());
             });
         }
+
+        public const int DEFAULT_HUNGER = 50;
+        public const int DEFAULT_HAPPINESS = 50;
     }
 }

@@ -15,11 +15,13 @@ namespace virtual_pet_game.Areas.v1.Controllers
     {
         private readonly IUserManager userManager;
         private readonly IAnimalManager animalManager;
+        private readonly IAnimalTypeManager animalTypeManager;
 
-        public AnimalController(IUserManager userManager, IAnimalManager animalManager)
+        public AnimalController(IUserManager userManager, IAnimalManager animalManager, IAnimalTypeManager animalTypeManager)
         {
             this.userManager = userManager;
             this.animalManager = animalManager;
+            this.animalTypeManager = animalTypeManager;
         }
 
         [HttpGet("{userId}/animals")]
@@ -45,7 +47,7 @@ namespace virtual_pet_game.Areas.v1.Controllers
             return Ok(animalDTOs);
         }
 
-        [HttpGet("{userId}/animals/{animalId}")]
+        [HttpGet("{userId}/animals/{animalId}", Name = "GetAnimalById")]
         public IActionResult GetById(int userId, int animalId)
         {
 
@@ -83,5 +85,52 @@ namespace virtual_pet_game.Areas.v1.Controllers
 
             return Ok(animal);
         }
+
+        [HttpPost("{userId}/animals")]
+        public IActionResult Create(int userId, [FromBody]AnimalCreationDTO animalCreation)
+        {
+            //Check object states
+            if (animalCreation == null)
+                return BadRequest();
+            
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                animalTypeManager.GetAnimalTypeById(animalCreation.AnimalTypeId);
+            }
+            catch(InvalidOperationException)
+            {
+                return NotFound($"AnimalType: {animalCreation.AnimalTypeId} was not found");
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            //Check if User exists
+            try
+            {
+                userManager.GetUserById(userId);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"User: {userId} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+
+            var returnValue = animalManager.CreateAnimal(userId, animalCreation);
+
+            return CreatedAtRoute("GetAnimalById", new {userId, animalId = returnValue.Id }, returnValue);
+
+        }
+
     }
 }

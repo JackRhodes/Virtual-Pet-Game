@@ -66,8 +66,7 @@ namespace virtual_pet_game.Tests.v1.Managers
             },
 
         };
-
-
+       
         IAnimalRepository animalRepository;
         IAnimalManager animalManager;
 
@@ -127,5 +126,27 @@ namespace virtual_pet_game.Tests.v1.Managers
             animalManager.GetAnimalById(123123);
         }
 
+        [TestMethod]
+        public void CreateAnimal_ShouldCreateAnimal_WhenValidDTO()
+        {
+            AnimalCreationDTO animalCreationDTO = new AnimalCreationDTO()
+            {
+                Name = "Gareth",
+                AnimalTypeId = 1
+            };
+
+            AnimalDTO animalDTO = animalManager.CreateAnimal(1, animalCreationDTO);
+
+            //Check if the model is valid
+            Assert.IsTrue(HelperMethods.CheckModelValidation(animalDTO));
+            Assert.AreEqual(animalCreationDTO.Name, animalDTO.Name);
+            Assert.AreEqual(animalCreationDTO.AnimalTypeId, animalDTO.AnimalTypeId);
+            Assert.AreEqual(mockAnimals.Count, animalDTO.Id);
+
+            //Should be default Value
+            Assert.AreEqual(HelperMethods.DEFAULT_HAPPINESS, animalDTO.Happiness);
+            Assert.AreEqual(HelperMethods.DEFAULT_HUNGER, animalDTO.Hunger);
+
+        }
     }
 }
