@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using virtual_pet_game.Areas.v1.Data;
+using virtual_pet_game.Areas.v1.Exceptions;
 using virtual_pet_game.Areas.v1.Managers.Contracts;
 using virtual_pet_game.Areas.v1.Managers.Implementation;
 using virtual_pet_game.Areas.v1.Models.Data;
@@ -101,17 +102,17 @@ namespace virtual_pet_game.Tests.v1.Managers
         }
 
         [TestMethod]
-        public void GetAnimalsByUserId_ShouldReturnEmptyIEnumerableOfAnimalDTOs_WhenInvalidUserId()
+        public void GetAnimalsByUserId_ShouldReturnEmptyIEnumerableOfAnimalDTOs_WhenValidUserIdAndNoAnimals()
         {
             List<AnimalDTO> animalDTOs = animalManager.GetAnimalsByUserId(2).ToList();
 
             Assert.AreEqual(0, animalDTOs.Count);
         }
-
+        
         [TestMethod]
         public void GetAnimalsById_ShouldReturnAnimalDTO_WhenValidId()
         {
-            AnimalDTO animalDTO = animalManager.GetAnimalById(1);
+            AnimalDTO animalDTO = animalManager.GetAnimalById(1,1);
 
             Assert.AreEqual(1, animalDTO.Id);
             Assert.AreEqual("Gazza", animalDTO.Name);
@@ -123,7 +124,14 @@ namespace virtual_pet_game.Tests.v1.Managers
         [ExpectedException(typeof(InvalidOperationException))]
         public void GetAnimalsById_ShouldThrowInvalidOperationException_WhenInvalidId()
         {
-            animalManager.GetAnimalById(123123);
+            animalManager.GetAnimalById(1,123123);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ResourceNotOwnedException))]
+        public void GetAnimalById_ShouldThrowResourceNotOwnedException_WhenUserIdDoesNotOwnChildResource()
+        {
+            animalManager.GetAnimalById(2, 1);
         }
 
         [TestMethod]

@@ -169,7 +169,7 @@ namespace virtual_pet_game.Tests.v1.Controllers
         }
 
         [TestMethod]
-        public void GetAnimalById_ShouldReturn404_WhenCalledWithInvalidAnimalId()
+        public void GetById_ShouldReturn404_WhenCalledWithInvalidAnimalId()
         {
             var result = animalController.GetById(1, 100);
             var response = result as NotFoundObjectResult;
@@ -177,6 +177,17 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.IsNotNull(response);
             Assert.AreEqual(404, response.StatusCode);
             Assert.AreEqual("Animal: 100 was not found", response.Value);
+        }
+
+        [TestMethod]
+        public void GetById_ShouldReturn404_WhenCalledWithValidUserIdAndValidAnimalIdThatIsNotOwnedByUser()
+        {
+            var result = animalController.GetById(2, 1);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("Animal: 1 was not found", response.Value);
         }
 
         [TestMethod]
@@ -286,6 +297,20 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.IsNotNull(response);
             Assert.AreEqual(404, response.StatusCode);
             Assert.AreEqual("Animal: 100 was not found", response.Value);
+            //Ensure not deleted
+            Assert.AreEqual(animalCount, mockAnimals.Count);
+        }
+
+        [TestMethod]
+        public void DeleteAnimal_ShouldReturn404_WhenUserIdDoesNotOwnChildResource()
+        {
+            int animalCount = mockAnimals.Count;
+            var result = animalController.Delete(2, 1);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("Animal: 1 was not found", response.Value);
             //Ensure not deleted
             Assert.AreEqual(animalCount, mockAnimals.Count);
         }

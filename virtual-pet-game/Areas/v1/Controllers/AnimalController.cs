@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using virtual_pet_game.Areas.v1.Exceptions;
 using virtual_pet_game.Areas.v1.Managers.Contracts;
 using virtual_pet_game.Areas.v1.Models.DTO;
 
@@ -70,10 +71,14 @@ namespace virtual_pet_game.Areas.v1.Controllers
 
             try
             {
-                animal = animalManager.GetAnimalById(animalId);
+                animal = animalManager.GetAnimalById(userId,animalId);
             }
             //Manager will throw exceptions to manage responses
             catch (InvalidOperationException)
+            {
+                return NotFound($"Animal: {animalId} was not found");
+            }
+            catch(ResourceNotOwnedException)
             {
                 return NotFound($"Animal: {animalId} was not found");
             }
@@ -153,9 +158,13 @@ namespace virtual_pet_game.Areas.v1.Controllers
             
             try
             {
-                animalTypeManager.GetAnimalTypeById(animalId);
+                animalManager.GetAnimalById(userId,animalId);
             }
             catch (InvalidOperationException)
+            {
+                return NotFound($"Animal: {animalId} was not found");
+            }
+            catch (ResourceNotOwnedException)
             {
                 return NotFound($"Animal: {animalId} was not found");
             }

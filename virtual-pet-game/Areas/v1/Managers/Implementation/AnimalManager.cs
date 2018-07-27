@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using virtual_pet_game.Areas.v1.Exceptions;
 using virtual_pet_game.Areas.v1.Managers.Contracts;
 using virtual_pet_game.Areas.v1.Models.Data;
 using virtual_pet_game.Areas.v1.Models.DTO;
@@ -38,10 +39,15 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             return returnValue;
         }
 
-        public AnimalDTO GetAnimalById(int id)
+        public AnimalDTO GetAnimalById(int userId, int id)
         {
             Animal animal = animalRepository.GetAnimalById(id);
 
+            if(userId != animal.Id)
+            {
+                throw new ResourceNotOwnedException();
+            }
+            
             AnimalDTO returnValue = Mapper.Map<AnimalDTO>(animal);
 
             return returnValue;
