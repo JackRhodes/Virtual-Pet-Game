@@ -48,5 +48,20 @@ namespace virtual_pet_game.Areas.v1.Data
             }
 
         };
+
+        public List<Animal> Animals { get; set; } = new List<Animal>
+        {
+            new Animal()
+            {
+                Id = 1,
+                AnimalTypeId = 1,
+                Happiness = 50,
+                Hunger = 50,
+                LastChecked = DateTime.Now,
+                Name = "Gazza",
+                UserId = 1
+                
+            }
+        };
     }
 }

@@ -17,7 +17,7 @@ namespace virtual_pet_game.Areas.v1.Models.Data
 
         public int AnimalTypeId { get; set; }
         public int Happiness { get; set; }
-        public int Sadness { get; set; }
+        public int Hunger { get; set; }
 
         public DateTime LastChecked { get; set; }
     }

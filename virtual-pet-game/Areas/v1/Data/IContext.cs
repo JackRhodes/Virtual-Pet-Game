@@ -16,5 +16,7 @@ namespace virtual_pet_game.Areas.v1.Data
         List<User> Users { get; set; }
 
         List<AnimalType> AnimalTypes { get; set; }
+
+        List<Animal> Animals { get; set; }
     }
 }

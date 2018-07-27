@@ -8,7 +8,7 @@ using virtual_pet_game.Areas.v1.Models.DTO;
 
 namespace virtual_pet_game.Areas.v1.Models.Mappings
 {
-    public class DTOMappings: Profile
+    public class DTOMappings : Profile
     {
         public DTOMappings()
         {
@@ -20,6 +20,8 @@ namespace virtual_pet_game.Areas.v1.Models.Mappings
                 .ReverseMap();
             CreateMap<AnimalType, AnimalTypeCreatedDTO>()
                 .ReverseMap();
+
+            CreateMap<Animal, AnimalDTO>();
         }
     }
 }
