@@ -77,7 +77,7 @@ namespace virtual_pet_game.Tests.v1.Repository
         [TestMethod]
         public void GetAnimalsFromUsers_ShouldReturn_IENumerableOfAnimals_WhenValidId()
         {
-            List<Animal> returnAnimals =  animalRepository.GetAnimalsFromUser(1).ToList();
+            List<Animal> returnAnimals = animalRepository.GetAnimalsFromUser(1).ToList();
 
             Assert.AreEqual(2, returnAnimals.Count);
             Assert.AreEqual(1, returnAnimals[0].Id);
@@ -149,6 +149,28 @@ namespace virtual_pet_game.Tests.v1.Repository
 
             Assert.AreEqual(animalCount - 1, mockAnimals.Count);
             Assert.ThrowsException<InvalidOperationException>(() => animalRepository.GetAnimalById(1));
+        }
+
+        [TestMethod]
+        public void UpdateAnimal_ShouldUpdateAnimal_WhenValid()
+        {
+            int count = mockAnimals.Count();
+
+            Animal updatedAnimal = new Animal()
+            {
+                Id = 1,
+                AnimalTypeId = 1,
+                Happiness = 50,
+                Hunger = 50,
+                LastChecked = DateTime.Now,
+                Name = "Marlow",
+                UserId = 1
+            };
+
+            animalRepository.UpdateAnimal(1, updatedAnimal);
+            Assert.AreEqual(count, mockAnimals.Count());
+            //Since the test is using the same underlying reference in memory, I can use this method to compare
+            Assert.ReferenceEquals(animalRepository.GetAnimalById(1), updatedAnimal);
         }
 
     }

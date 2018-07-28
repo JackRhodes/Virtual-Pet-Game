@@ -38,7 +38,18 @@ namespace virtual_pet_game.Areas.v1.Repository.Implementation
 
         public int GetNumberOfAnimals()
         {
-           return context.Animals.Max(x => x.Id);
+            return context.Animals.Max(x => x.Id);
+        }
+
+        public Animal UpdateAnimal(int id, Animal animal)
+        {
+            Animal result = context.Animals.First(x => x.Id == id);
+
+            context.Animals.Remove(result);
+
+            context.Animals.Add(animal);
+
+            return context.Animals.First(x => x.Id == id);
         }
     }
 }

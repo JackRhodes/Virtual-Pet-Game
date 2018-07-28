@@ -17,5 +17,7 @@ namespace virtual_pet_game.Areas.v1.Repository.Contracts
         /// <returns></returns>
         int GetNumberOfAnimals();
         void DeleteAnimal(Animal animal);
+
+        Animal UpdateAnimal(int id, Animal animal);
     }
 }
