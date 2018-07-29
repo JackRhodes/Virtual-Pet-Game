@@ -167,7 +167,7 @@ namespace virtual_pet_game.Tests.v1.Repository
                 UserId = 1
             };
 
-            animalRepository.UpdateAnimal(1, updatedAnimal);
+            animalRepository.UpdateAnimal(updatedAnimal);
             Assert.AreEqual(count, mockAnimals.Count());
             //Since the test is using the same underlying reference in memory, I can use this method to compare
             Assert.ReferenceEquals(animalRepository.GetAnimalById(1), updatedAnimal);

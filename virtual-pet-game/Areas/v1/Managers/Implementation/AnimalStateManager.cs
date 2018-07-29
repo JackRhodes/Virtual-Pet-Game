@@ -21,25 +21,30 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             //This calculate method is simple so will use Ints
             int minutes = Convert.ToInt32(timeSpan.TotalMinutes);
 
-            try
+            //Ensure time has passed.
+            if (minutes > 0)
             {
-                //Check for overflow... Someone could play this game once and then play it in 100 years
-                animal.Hunger = checked(animal.Hunger + (minutes * animalType.HungerIncreaseRate));
-            }
-            catch (OverflowException)
-            {
-                animal.Hunger = 100;
-            }
+                try
+                {
+                    //Check for overflow... Someone could play this game once and then play it in 100 years
+                    animal.Hunger = checked(animal.Hunger + (minutes * animalType.HungerIncreaseRate));
+                }
+                catch (OverflowException)
+                {
+                    animal.Hunger = 100;
+                }
 
-            try
-            {
-                animal.Happiness = checked(animal.Happiness - (minutes * animalType.HappinessDeductionRate));
+                try
+                {
+                    animal.Happiness = checked(animal.Happiness - (minutes * animalType.HappinessDeductionRate));
+                }
+                catch (OverflowException)
+                {
+                    animal.Happiness = 0;
+                }
+
+                animal.LastChecked = DateTime.Now;
             }
-            catch (OverflowException)
-            {
-                animal.Happiness = 0;
-            }
-            
             //Check if values have gone below correct range
 
             if (animal.Hunger > 100)
@@ -51,7 +56,7 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
                 animal.Happiness = 100;
             else if (animal.Happiness < 0)
                 animal.Happiness = 0;
-
+            
             return animal;
         }
 
@@ -60,7 +65,7 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             int value = (100 - animal.Hunger) + animal.Happiness;
 
             AnimalDataTypes.AnimalState animalState;
-            
+
             //This is a very simplistic implentation. 
             //This could be refactored to use a Database
 

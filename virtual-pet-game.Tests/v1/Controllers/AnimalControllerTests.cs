@@ -97,6 +97,7 @@ namespace virtual_pet_game.Tests.v1.Controllers
         IUserRepository userRepository;
         IAnimalTypeManager animalTypeManager;
         IAnimalTypeRepository animalTypeRepository;
+        IAnimalStateManager animalStateManager;
         AnimalController animalController;
 
         [TestInitialize]
@@ -110,16 +111,20 @@ namespace virtual_pet_game.Tests.v1.Controllers
             context.Setup(x => x.Users).Returns(mockUsers);
             context.Setup(x => x.AnimalTypes).Returns(mockAnimalTypes);
 
-            animalRepository = new AnimalRepository(context.Object);
-
-            animalManager = new AnimalManager(animalRepository);
-
+            
             userRepository = new UserRepository(context.Object);
 
             userManager = new UserManager(userRepository);
 
             animalTypeRepository = new AnimalTypeRepository(context.Object);
             animalTypeManager = new AnimalTypeManager(animalTypeRepository);
+
+            animalRepository = new AnimalRepository(context.Object);
+
+            animalStateManager = new AnimalStateManager();
+
+            animalManager = new AnimalManager(animalRepository, animalTypeManager, animalStateManager);
+
 
             animalController = new AnimalController(userManager, animalManager, animalTypeManager);
         }

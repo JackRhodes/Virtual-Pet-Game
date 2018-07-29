@@ -67,9 +67,32 @@ namespace virtual_pet_game.Tests.v1.Managers
             },
 
         };
-       
+
+        public List<AnimalType> mockAnimalTypes = new List<AnimalType>()
+        {
+            new AnimalType()
+            {
+                Id = 1,
+                AnimalTypeName = "Doggo",
+                HappinessDeductionRate = 2,
+                HungerIncreaseRate = 3
+
+            },
+            new AnimalType()
+            {
+                Id = 2,
+                AnimalTypeName = "Cat",
+                HappinessDeductionRate = 4,
+                HungerIncreaseRate = 2
+            }
+
+        };
+
         IAnimalRepository animalRepository;
         IAnimalManager animalManager;
+        IAnimalTypeManager animalTypeManager;
+        IAnimalTypeRepository animalTypeRepository;
+        IAnimalStateManager animalStateManager;
 
         [TestInitialize]
         public void TestSetup()
@@ -80,16 +103,20 @@ namespace virtual_pet_game.Tests.v1.Managers
             Mock<IContext> context = new Mock<IContext>();
 
             context.Setup(x => x.Animals).Returns(mockAnimals);
+            context.Setup(x => x.AnimalTypes).Returns(mockAnimalTypes);
+            context.Setup(x => x.Users).Returns(mockUsers);
 
             animalRepository = new AnimalRepository(context.Object);
-
-            animalManager = new AnimalManager(animalRepository);
+            animalTypeRepository = new AnimalTypeRepository(context.Object);
+            animalTypeManager = new AnimalTypeManager(animalTypeRepository);
+            animalStateManager = new AnimalStateManager();
+            animalManager = new AnimalManager(animalRepository, animalTypeManager, animalStateManager);
         }
 
         [TestMethod]
-        public void GetAnimalsByUserId_ShouldReturnAnimalDTOs_WhenValidUserId ()
+        public void GetAnimalsByUserId_ShouldReturnAnimalDTOs_WhenValidUserId()
         {
-           List<AnimalDTO> animalDTOs = animalManager.GetAnimalsByUserId(1).ToList();
+            List<AnimalDTO> animalDTOs = animalManager.GetAnimalsByUserId(1).ToList();
 
             Assert.AreEqual(2, animalDTOs.Count);
             Assert.AreEqual(1, animalDTOs[0].Id);
@@ -108,11 +135,11 @@ namespace virtual_pet_game.Tests.v1.Managers
 
             Assert.AreEqual(0, animalDTOs.Count);
         }
-        
+
         [TestMethod]
         public void GetAnimalsById_ShouldReturnAnimalDTO_WhenValidId()
         {
-            AnimalDTO animalDTO = animalManager.GetAnimalById(1,1);
+            AnimalDTO animalDTO = animalManager.GetAnimalById(1, 1);
 
             Assert.AreEqual(1, animalDTO.Id);
             Assert.AreEqual("Gazza", animalDTO.Name);
@@ -124,7 +151,7 @@ namespace virtual_pet_game.Tests.v1.Managers
         [ExpectedException(typeof(InvalidOperationException))]
         public void GetAnimalsById_ShouldThrowInvalidOperationException_WhenInvalidId()
         {
-            animalManager.GetAnimalById(1,123123);
+            animalManager.GetAnimalById(1, 123123);
         }
 
         [TestMethod]

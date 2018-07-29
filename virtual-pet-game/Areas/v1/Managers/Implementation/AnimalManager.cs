@@ -14,13 +14,18 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
     public class AnimalManager : IAnimalManager
     {
         private readonly IAnimalRepository animalRepository;
-
+        private readonly IAnimalTypeManager animalTypeManager;
+        private readonly IAnimalStateManager animalStateManager;
         private const int DEFAULT_HUNGER = 50;
         private const int DEFAULT_HAPPINESS = 50;
 
-        public AnimalManager(IAnimalRepository animalRepository)
+        public AnimalManager(IAnimalRepository animalRepository,
+            IAnimalTypeManager animalTypeManager,
+            IAnimalStateManager animalStateManager)
         {
             this.animalRepository = animalRepository;
+            this.animalTypeManager = animalTypeManager;
+            this.animalStateManager = animalStateManager;
         }
 
         public AnimalDTO CreateAnimal(int userId, AnimalCreationDTO animalCreationDTO)
@@ -43,11 +48,18 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
         {
             Animal animal = animalRepository.GetAnimalById(id);
 
-            if(userId != animal.Id)
+            if (userId != animal.UserId)
             {
                 throw new ResourceNotOwnedException();
             }
-            
+
+            //Find the animalType associated with the animal
+            AnimalTypeDTO animalType = animalTypeManager.GetAnimalTypeById(animal.AnimalTypeId);
+            //Calculate the new animal state values
+            animal = animalStateManager.CalculateAnimalState(animal, animalType);
+            //Update the animal in the database
+            animal = animalRepository.UpdateAnimal(animal);
+
             AnimalDTO returnValue = Mapper.Map<AnimalDTO>(animal);
 
             return returnValue;
@@ -55,9 +67,28 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
 
         public IEnumerable<AnimalDTO> GetAnimalsByUserId(int id)
         {
-            IEnumerable<Animal> animals = animalRepository.GetAnimalsFromUser(id);
+            //Create new reference in heap
+            List<Animal> animals = animalRepository.GetAnimalsFromUser(id).ToList();
 
-            IEnumerable<AnimalDTO> returnValue = Mapper.Map<IEnumerable<AnimalDTO>>(animals);
+            List<Animal> updatedAnimals = new List<Animal>();
+
+
+            foreach (var animal in animals)
+            {
+                AnimalTypeDTO animalType = animalTypeManager.GetAnimalTypeById(animal.AnimalTypeId);
+                //Calculate the new animal state values
+
+                Animal tempAnimal;
+
+                tempAnimal = animalStateManager.CalculateAnimalState(animal, animalType);
+                //Update the animal in the database
+                tempAnimal = animalRepository.UpdateAnimal(tempAnimal);
+
+                updatedAnimals.Add(tempAnimal);
+            }
+
+
+            IEnumerable<AnimalDTO> returnValue = Mapper.Map<IEnumerable<AnimalDTO>>(updatedAnimals);
 
             return returnValue;
         }

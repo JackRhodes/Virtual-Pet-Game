@@ -83,6 +83,7 @@ namespace virtual_pet_game
             services.AddTransient<IAnimalTypeManager, AnimalTypeManager>();
             services.AddTransient<IAnimalRepository, AnimalRepository>();
             services.AddTransient<IAnimalManager, AnimalManager>();
+            services.AddTransient<IAnimalStateManager, AnimalStateManager>();
             services.AddAutoMapper();
         }
 

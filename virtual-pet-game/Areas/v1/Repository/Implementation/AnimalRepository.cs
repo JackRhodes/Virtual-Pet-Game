@@ -41,15 +41,15 @@ namespace virtual_pet_game.Areas.v1.Repository.Implementation
             return context.Animals.Max(x => x.Id);
         }
 
-        public Animal UpdateAnimal(int id, Animal animal)
+        public Animal UpdateAnimal(Animal animal)
         {
-            Animal result = context.Animals.First(x => x.Id == id);
+            Animal result = context.Animals.First(x => x.Id == animal.Id);
 
             context.Animals.Remove(result);
 
             context.Animals.Add(animal);
 
-            return context.Animals.First(x => x.Id == id);
+            return context.Animals.First(x => x.Id == animal.Id);
         }
     }
 }

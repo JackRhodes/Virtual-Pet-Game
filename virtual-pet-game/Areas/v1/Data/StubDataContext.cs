@@ -66,7 +66,7 @@ namespace virtual_pet_game.Areas.v1.Data
              new Animal()
             {
                 Id = 2,
-                AnimalTypeId = 1,
+                AnimalTypeId = 2,
                 Happiness = 50,
                 Hunger = 50,
                 LastChecked = DateTime.Now,
@@ -89,8 +89,8 @@ namespace virtual_pet_game.Areas.v1.Data
 
               new Animal()
             {
-                Id = 3,
-                AnimalTypeId = 1,
+                Id = 4,
+                AnimalTypeId = 2,
                 Happiness = 50,
                 Hunger = 50,
                 LastChecked = DateTime.Now,
