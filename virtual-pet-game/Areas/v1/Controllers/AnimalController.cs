@@ -91,6 +91,96 @@ namespace virtual_pet_game.Areas.v1.Controllers
             return Ok(animal);
         }
 
+        [HttpGet("{userId}/animals/{animalId}/feed")]
+        public IActionResult Feed(int userId, int animalId)
+        {
+
+            AnimalDTO animal = null;
+
+            try
+            {
+                userManager.GetUserById(userId);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"User: {userId} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            try
+            {
+                animalManager.GetAnimalById(userId, animalId);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"Animal: {animalId} was not found");
+            }
+            catch (ResourceNotOwnedException)
+            {
+                return NotFound($"Animal: {animalId} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            animal = animalManager.FeedAnimal(userId, animalId);
+
+            return Ok(animal);
+        }
+
+        [HttpGet("{userId}/animals/{animalId}/pet")]
+        public IActionResult Pet(int userId, int animalId)
+        {
+
+            AnimalDTO animal = null;
+
+            try
+            {
+                userManager.GetUserById(userId);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"User: {userId} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            try
+            {
+                animalManager.GetAnimalById(userId, animalId);
+            }
+            //Manager will throw exceptions to manage responses
+            catch (InvalidOperationException)
+            {
+                return NotFound($"Animal: {animalId} was not found");
+            }
+            catch (ResourceNotOwnedException)
+            {
+                return NotFound($"Animal: {animalId} was not found");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            animal = animalManager.PetAnimal(userId, animalId);
+
+            return Ok(animal);
+        }
+
         [HttpPost("{userId}/animals")]
         public IActionResult Create(int userId, [FromBody]AnimalCreationDTO animalCreation)
         {

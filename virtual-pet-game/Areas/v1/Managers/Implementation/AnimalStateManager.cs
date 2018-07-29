@@ -56,7 +56,7 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
                 animal.Happiness = 100;
             else if (animal.Happiness < 0)
                 animal.Happiness = 0;
-            
+
             return animal;
         }
 
@@ -85,5 +85,22 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             return animalState;
         }
 
+        public Animal PetAnimal(Animal animal, AnimalTypeDTO animalType)
+        {
+            //This could be expanded drastically to incorporate Animal Happiness objects that increase happiness more depending upon their type.
+
+            animal.Happiness += 20;
+
+            return CalculateAnimalState(animal, animalType);            
+        }
+
+        public Animal FeedAnimal(Animal animal, AnimalTypeDTO animalType)
+        {
+            //This could be expanded drastically to incorporate Animal Food objects that decrease food more depending upon their type.
+
+            animal.Hunger -= 20;
+
+            return CalculateAnimalState(animal, animalType);
+        }
     }
 }

@@ -10,7 +10,9 @@ namespace virtual_pet_game.Areas.v1.Managers.Contracts
 {
     public interface IAnimalStateManager
     {
-       Animal CalculateAnimalState(Animal animal, AnimalTypeDTO animalType);
-       AnimalDataTypes.AnimalState GetAnimalState (Animal animal);
+        Animal CalculateAnimalState(Animal animal, AnimalTypeDTO animalType);
+        AnimalDataTypes.AnimalState GetAnimalState(Animal animal);
+        Animal PetAnimal(Animal animal, AnimalTypeDTO animalType);
+        Animal FeedAnimal(Animal animal, AnimalTypeDTO animalType);
     }
 }

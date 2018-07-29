@@ -203,5 +203,118 @@ namespace virtual_pet_game.Tests.v1.Managers
             Assert.AreEqual(AnimalDataTypes.AnimalState.Unhappy, animalState);
         }
 
+        [TestMethod]
+        public void PetAnimal_ShouldIncreaseHappiness_WhenPetted()
+        {
+            Animal animal = new Animal()
+            {
+                AnimalTypeId = 1,
+                Happiness = 0,
+                Hunger = 40,
+                Id = 1,
+                LastChecked = DateTime.Now,
+                Name = "Molly",
+                UserId = 1
+            };
+
+
+            AnimalTypeDTO animalType = new AnimalTypeDTO()
+            {
+                AnimalTypeName = "Dog",
+                HappinessDeductionRate = 3,
+                HungerIncreaseRate = 2,
+                Id = 1
+            };
+
+            animal = animalStateManager.PetAnimal(animal, animalType);
+
+            Assert.AreEqual(20, animal.Happiness);
+        }
+
+        [TestMethod]
+        public void PetAnimal_ShouldBeMaxHappiness_WhenPettedAt100Happiness()
+        {
+            Animal animal = new Animal()
+            {
+                AnimalTypeId = 1,
+                Happiness = 100,
+                Hunger = 40,
+                Id = 1,
+                LastChecked = DateTime.Now,
+                Name = "Molly",
+                UserId = 1
+            };
+
+
+            AnimalTypeDTO animalType = new AnimalTypeDTO()
+            {
+                AnimalTypeName = "Dog",
+                HappinessDeductionRate = 3,
+                HungerIncreaseRate = 2,
+                Id = 1
+            };
+
+            animal = animalStateManager.PetAnimal(animal, animalType);
+
+            Assert.AreEqual(100, animal.Happiness);
+        }
+
+        [TestMethod]
+        public void FeedAnimal_ShouldDecreaseHunger_WhenFed()
+        {
+            Animal animal = new Animal()
+            {
+                AnimalTypeId = 1,
+                Happiness = 100,
+                Hunger = 40,
+                Id = 1,
+                LastChecked = DateTime.Now,
+                Name = "Molly",
+                UserId = 1
+            };
+
+
+            AnimalTypeDTO animalType = new AnimalTypeDTO()
+            {
+                AnimalTypeName = "Dog",
+                HappinessDeductionRate = 3,
+                HungerIncreaseRate = 2,
+                Id = 1
+            };
+
+            animal = animalStateManager.FeedAnimal(animal, animalType);
+
+            Assert.AreEqual(20, animal.Hunger);
+        }
+
+        [TestMethod]
+        public void FeedAnimal_ShouldBeMinimumHunger_WhenFedWhenFull()
+        {
+            Animal animal = new Animal()
+            {
+                AnimalTypeId = 1,
+                Happiness = 100,
+                Hunger = 0,
+                Id = 1,
+                LastChecked = DateTime.Now,
+                Name = "Molly",
+                UserId = 1
+            };
+
+
+            AnimalTypeDTO animalType = new AnimalTypeDTO()
+            {
+                AnimalTypeName = "Dog",
+                HappinessDeductionRate = 3,
+                HungerIncreaseRate = 2,
+                Id = 1
+            };
+
+            animal = animalStateManager.FeedAnimal(animal, animalType);
+
+            Assert.AreEqual(0, animal.Hunger);
+        }
+
+
     }
 }

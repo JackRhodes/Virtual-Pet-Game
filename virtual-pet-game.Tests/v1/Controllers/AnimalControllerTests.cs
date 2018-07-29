@@ -320,5 +320,106 @@ namespace virtual_pet_game.Tests.v1.Controllers
             Assert.AreEqual(animalCount, mockAnimals.Count);
         }
 
+        [TestMethod]
+        public void FeedAnimal_ShouldReturnUpdatedAnimal_WhenValid()
+        {
+            var result = animalController.Feed(1, 1);
+            var response = result as OkObjectResult;
+            var responseValue = response.Value as AnimalDTO;
+            AnimalDTO animal = responseValue;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(200, response.StatusCode);
+            Assert.AreEqual(1, animal.Id);
+            Assert.AreEqual("Gazza", animal.Name);
+            Assert.AreEqual(50, animal.Happiness);
+            Assert.AreEqual(30, animal.Hunger);
+        }
+
+
+        [TestMethod]
+        public void FeedAnimal_ShouldReturn404_WhenCalledWithInvalidAnimalId()
+        {
+            var result = animalController.Feed(1, 100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("Animal: 100 was not found", response.Value);
+        }
+
+        [TestMethod]
+        public void FeedAnimal_ShouldReturn404_WhenCalledWithValidUserIdAndValidAnimalIdThatIsNotOwnedByUser()
+        {
+            var result = animalController.Feed(2, 1);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("Animal: 1 was not found", response.Value);
+        }
+
+        [TestMethod]
+        public void FeedAnimal_ShouldReturn404_WhenCalledWithInvalidUserId()
+        {
+            var result = animalController.Feed(100, 100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("User: 100 was not found", response.Value);
+        }
+
+
+        [TestMethod]
+        public void PetAnimal_ShouldReturnUpdatedAnimal_WhenValid()
+        {
+            var result = animalController.Pet(1, 1);
+            var response = result as OkObjectResult;
+            var responseValue = response.Value as AnimalDTO;
+            AnimalDTO animal = responseValue;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(200, response.StatusCode);
+            Assert.AreEqual(1, animal.Id);
+            Assert.AreEqual("Gazza", animal.Name);
+            Assert.AreEqual(70, animal.Happiness);
+            Assert.AreEqual(50, animal.Hunger);
+        }
+
+
+        [TestMethod]
+        public void PetAnimal_ShouldReturn404_WhenCalledWithInvalidAnimalId()
+        {
+            var result = animalController.Pet(1, 100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("Animal: 100 was not found", response.Value);
+        }
+
+        [TestMethod]
+        public void PetAnimal_ShouldReturn404_WhenCalledWithValidUserIdAndValidAnimalIdThatIsNotOwnedByUser()
+        {
+            var result = animalController.Pet(2, 1);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("Animal: 1 was not found", response.Value);
+        }
+
+        [TestMethod]
+        public void PetAnimal_ShouldReturn404_WhenCalledWithInvalidUserId()
+        {
+            var result = animalController.Pet(100, 100);
+            var response = result as NotFoundObjectResult;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(404, response.StatusCode);
+            Assert.AreEqual("User: 100 was not found", response.Value);
+        }
+
     }
 }

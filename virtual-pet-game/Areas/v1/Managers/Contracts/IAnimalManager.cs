@@ -14,5 +14,9 @@ namespace virtual_pet_game.Areas.v1.Managers.Contracts
         AnimalDTO CreateAnimal(int userId, AnimalCreationDTO animalCreationDTO);
 
         void DeleteAnimal(int animalId);
+
+        AnimalDTO FeedAnimal(int userId, int id);
+
+        AnimalDTO PetAnimal(int userId, int id);
     }
 }

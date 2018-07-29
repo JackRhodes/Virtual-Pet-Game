@@ -107,5 +107,48 @@ namespace virtual_pet_game.Areas.v1.Managers.Implementation
             Animal animal = animalRepository.GetAnimalById(animalId);
             animalRepository.DeleteAnimal(animal);
         }
+
+        public AnimalDTO FeedAnimal(int userId, int id)
+        {
+            Animal animal = animalRepository.GetAnimalById(id);
+
+            if (userId != animal.UserId)
+            {
+                throw new ResourceNotOwnedException();
+            }
+
+            //Find the animalType associated with the animal
+            AnimalTypeDTO animalType = animalTypeManager.GetAnimalTypeById(animal.AnimalTypeId);
+
+            animal = animalStateManager.FeedAnimal(animal, animalType);
+
+            animal = animalRepository.UpdateAnimal(animal);
+
+            AnimalDTO returnValue = Mapper.Map<AnimalDTO>(animal);
+
+            return returnValue;
+        }
+
+        public AnimalDTO PetAnimal(int userId, int id)
+        {
+            Animal animal = animalRepository.GetAnimalById(id);
+
+            if (userId != animal.UserId)
+            {
+                throw new ResourceNotOwnedException();
+            }
+
+            //Find the animalType associated with the animal
+            AnimalTypeDTO animalType = animalTypeManager.GetAnimalTypeById(animal.AnimalTypeId);
+
+            animal = animalStateManager.PetAnimal(animal, animalType);
+
+            animal = animalRepository.UpdateAnimal(animal);
+
+            AnimalDTO returnValue = Mapper.Map<AnimalDTO>(animal);
+
+            return returnValue;
+        }
+
     }
 }

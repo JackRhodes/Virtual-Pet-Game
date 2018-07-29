@@ -44,6 +44,17 @@ namespace virtual_pet_game.Tests.v1.Managers
                 Name = "Charles",
                 UserId = 1
 
+            },
+
+              new Animal()
+            {
+                Id = 3,
+                AnimalTypeId = 1,
+                Happiness = 100,
+                Hunger = 0,
+                LastChecked = DateTime.Now,
+                Name = "Charles",
+                UserId = 1
             }
         };
 
@@ -116,9 +127,11 @@ namespace virtual_pet_game.Tests.v1.Managers
         [TestMethod]
         public void GetAnimalsByUserId_ShouldReturnAnimalDTOs_WhenValidUserId()
         {
+            int animalCount = mockAnimals.Count;
+
             List<AnimalDTO> animalDTOs = animalManager.GetAnimalsByUserId(1).ToList();
 
-            Assert.AreEqual(2, animalDTOs.Count);
+            Assert.AreEqual(animalCount, animalDTOs.Count);
             Assert.AreEqual(1, animalDTOs[0].Id);
             Assert.AreEqual(2, animalDTOs[1].Id);
 
@@ -192,6 +205,53 @@ namespace virtual_pet_game.Tests.v1.Managers
 
             Assert.AreEqual(animalCount - 1, mockAnimals.Count);
             Assert.ThrowsException<InvalidOperationException>(() => animalRepository.GetAnimalById(1));
+        }
+        
+
+        [TestMethod]
+        public void FeedAnimal_ShouldDecreaseHunger_WhenFed()
+        {
+            AnimalDTO animal = animalManager.FeedAnimal(1, 1);
+
+            Assert.AreEqual(30, animal.Hunger);
+        }
+
+        [TestMethod]
+        public void FeedAnimal_ShouldBeMinimumHunger_WhenFedWhenFull()
+        {
+            AnimalDTO animal = animalManager.FeedAnimal(1, 3);
+
+            Assert.AreEqual(0, animal.Hunger);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ResourceNotOwnedException))]
+        public void FeedAnimal_ShouldThrowResourceNotOwnedException_WhenUserIdDoesNotOwnChildResource()
+        {
+            animalManager.FeedAnimal(2, 1);
+        }
+        
+        [TestMethod]
+        public void PetAnimal_ShouldIncreaseHappiness_WhenPet()
+        {
+            AnimalDTO animal = animalManager.PetAnimal(1, 1);
+
+            Assert.AreEqual(70, animal.Happiness);
+        }
+
+        [TestMethod]
+        public void PetAnimal_ShouldBeMaximumHappiness_WhenPetWhenFull()
+        {
+            AnimalDTO animal = animalManager.PetAnimal(1, 3);
+
+            Assert.AreEqual(100, animal.Happiness);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ResourceNotOwnedException))]
+        public void PetAnimal_ShouldThrowResourceNotOwnedException_WhenUserIdDoesNotOwnChildResource()
+        {
+            animalManager.PetAnimal(2, 1);
         }
     }
 }
