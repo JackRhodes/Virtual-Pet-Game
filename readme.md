@@ -1,3 +1,5 @@
+This was an API I created as part of an interview task.
+
 # Virtual Pet Game
 
 ## Introduction
